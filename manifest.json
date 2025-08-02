@@ -1,0 +1,45 @@
+{
+    "manifest_version": 3,
+    "name": "Forocoching",
+    "version": "0.0.1",
+    "description": "",
+    "icons": {
+        "512": "icon.png"
+    },
+    "permissions": [
+        "tabs",
+        "activeTab",
+        "storage"
+    ],
+    "host_permissions": [
+        "<all_urls>"
+    ],
+    "background": {
+        "service_worker": "dist/background/index.js",
+        "scripts": [
+            "dist/browser-polyfill.js",
+            "dist/background/background.js"
+        ]
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://forocoches.com/*"
+            ],
+            "js": [
+                "dist/browser-polyfill.js",
+                "dist/content-script/index.js"
+            ],
+            "all_frames": true,
+            "run_at": "document_start"
+        }
+    ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "{a76f92a1-2d47-4b1f-bc2c-5fc9e8dfb93f}"
+        }
+    },
+    "action": {
+        "default_title": "Forocoching"
+    }
+}
