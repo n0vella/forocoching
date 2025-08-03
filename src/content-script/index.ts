@@ -8,10 +8,10 @@ function log(...data: any[]) {
 }
 
 async function loadSettings() {
-  const settings = (await browser.storage.sync.get("settings")).settings as
+  const settings = (await browser.storage.local.get("settings")).settings as
     | Settings
     | undefined
-  window.settings = { ...settings, ...defaultSettings }
+  window.settings = { ...defaultSettings, ...settings }
 }
 
 async function main() {
