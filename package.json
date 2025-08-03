@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "dev": "vite build --watch"
+    "dev": "cross-env WATCH=true vite build --watch"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
   "devDependencies": {
     "@types/node": "^24.1.0",
     "@types/webextension-polyfill": "^0.12.3",
+    "cross-env": "^10.0.0",
     "prettier": "^3.6.2",
     "typescript": "^5.9.2",
     "vite": "^7.0.6",
