@@ -1,4 +1,5 @@
 import manifest from "../../manifest.json"
+import defaultSettings from "../defaultSettings.json"
 
 const myConsole = window.console
 
@@ -6,11 +7,19 @@ function log(...data: any[]) {
   console.log(`%c${manifest.name}:`, "color: green; font-weight: bold", ...data)
 }
 
-function main() {
+async function loadSettings() {
+  const settings = (await browser.storage.sync.get("settings")).settings as
+    | Settings
+    | undefined
+  window.settings = { ...settings, ...defaultSettings }
+}
+
+async function main() {
   window.console = myConsole // return hijacked console
   window.log = log // convenience
 
-  log("Hello world!")
+  await loadSettings()
+  log("settings", settings)
 }
 
 window.addEventListener("DOMContentLoaded", main)
