@@ -7,7 +7,9 @@ interface Message {
 
 declare function log(...args: any[]): void
 
-interface Settings {}
+interface Settings {
+  filteredStrings: string[]
+}
 
 interface Window {
   settings: Settings

@@ -1,5 +1,6 @@
 import manifest from "../../manifest.json"
 import defaultSettings from "../defaultSettings.json"
+import router from "./router"
 
 const myConsole = window.console
 
@@ -19,7 +20,7 @@ async function main() {
   window.log = log // convenience
 
   await loadSettings()
-  log("settings", settings)
+  router()
 }
 
 window.addEventListener("DOMContentLoaded", main)
