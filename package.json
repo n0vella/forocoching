@@ -11,10 +11,13 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@tailwindcss/vite": "^4.1.11",
     "@types/node": "^24.1.0",
     "@types/webextension-polyfill": "^0.12.3",
     "cross-env": "^10.0.0",
     "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.6.14",
+    "tailwindcss": "^4.1.11",
     "typescript": "^5.9.2",
     "vite": "^7.0.6",
     "webextension-polyfill": "^0.12.0"

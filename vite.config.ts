@@ -1,6 +1,7 @@
 import { copyFileSync } from "fs"
 import { resolve } from "path"
 import { defineConfig } from "vite"
+import tailwindcss from "@tailwindcss/vite"
 
 export default defineConfig({
   root: "src",
@@ -20,6 +21,7 @@ export default defineConfig({
         copyFileSync(src, dest)
       },
     },
+    tailwindcss(),
   ],
   build: {
     outDir: resolve(__dirname, "dist"),
