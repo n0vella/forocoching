@@ -4,8 +4,7 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "build": "vite build",
-    "dev": "cross-env WATCH=true vite build --watch"
+    "dev": "cross-env WATCH=true concurrently \"vite build --config vite.config.es.js --watch\" \"vite build --config vite.config.iife.js --watch\""
   },
   "keywords": [],
   "author": "",
@@ -14,6 +13,7 @@
     "@tailwindcss/vite": "^4.1.11",
     "@types/node": "^24.1.0",
     "@types/webextension-polyfill": "^0.12.3",
+    "concurrently": "^9.2.0",
     "cross-env": "^10.0.0",
     "prettier": "^3.6.2",
     "prettier-plugin-tailwindcss": "^0.6.14",
