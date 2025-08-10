@@ -2,6 +2,7 @@ import { loadSettings } from "../utils"
 
 interface SettingsForm extends HTMLFormElement {
   filteredStrings: HTMLTextAreaElement
+  ignoredUsers: HTMLTextAreaElement
 }
 
 function onSubmit(e: SubmitEvent) {
@@ -10,9 +11,11 @@ function onSubmit(e: SubmitEvent) {
   const form = e.currentTarget as SettingsForm
 
   const filteredStrings = form.filteredStrings.value.trim().split("\n")
+  const ignoredUsers = form.ignoredUsers.value.trim().split("\n")
 
   const updatedSettings = {
     filteredStrings,
+    ignoredUsers,
   }
 
   // set settings
@@ -26,4 +29,5 @@ form.addEventListener("submit", onSubmit)
 // set values from settings
 loadSettings().then(() => {
   form.filteredStrings.value = settings.filteredStrings.join("\n")
+  form.ignoredUsers.value = settings.ignoredUsers.join("\n")
 })

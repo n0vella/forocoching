@@ -23,12 +23,18 @@
         class="flex h-screen w-full flex-col gap-5 overflow-y-auto bg-zinc-50 p-10 pt-16"
       >
         <div class="settings-section">
-          <h2>Ocultar temas por título</h2>
+          <h2>Filtrado por título</h2>
           <span class="text-sm"
             >En cada linea escribir las palabras o frases que se quieran
             ocultar</span
           >
           <textarea name="filteredStrings" class="h-40 w-96 text-sm"></textarea>
+        </div>
+
+        <div class="settings-section">
+          <h2>Usuarios ignorados</h2>
+          <span class="text-sm">Uno por linea</span>
+          <textarea name="ignoredUsers" class="h-40 w-96 text-sm"></textarea>
         </div>
       </div>
     </form>
