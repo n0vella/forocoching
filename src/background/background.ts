@@ -1,3 +1,5 @@
+import "webextension-polyfill"
+
 browser.runtime.onMessage.addListener(function messageListener(
   message: Message,
 ) {
@@ -10,6 +12,6 @@ browser.runtime.onMessage.addListener(function messageListener(
 // open settigns in a new tab when click on extension icon
 const openSettings = () =>
   browser.tabs.create({
-    url: browser.runtime.getURL("dist/settings/settings.html"),
+    url: browser.runtime.getURL("dist/background/settings/settings.html"),
   })
 browser.action.onClicked.addListener(openSettings)

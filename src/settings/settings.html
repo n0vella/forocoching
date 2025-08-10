@@ -5,9 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/x-icon" href="/icon.png" />
     <link rel="stylesheet" href="./settings.css" />
+    <script type="module" src="./settings.ts"></script>
     <title>Forocoching</title>
   </head>
   <body>
-    Hello world!
+    <form>
+      <div
+        class="absolute top-0 flex h-10 w-full items-center bg-zinc-100 p-2 shadow shadow-zinc-200"
+      >
+        <button
+          class="flex h-8 items-center rounded-lg border-2 border-emerald-600 bg-emerald-500 px-2 py-1 text-white enabled:hover:text-black"
+        >
+          <span>GUARDAR</span>
+        </button>
+      </div>
+      <div
+        class="flex h-screen w-full flex-col gap-5 overflow-y-auto bg-zinc-50 p-10 pt-16"
+      >
+        <div class="settings-section">
+          <h2>Ocultar temas por título</h2>
+          <span class="text-sm"
+            >En cada linea escribir las palabras o frases que se quieran
+            ocultar</span
+          >
+          <textarea name="filteredStrings" class="h-40 w-96 text-sm"></textarea>
+        </div>
+      </div>
+    </form>
   </body>
 </html>

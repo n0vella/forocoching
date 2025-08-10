@@ -1,3 +1,17 @@
-body {
-  background-color: #fafafa;
+@import "tailwindcss";
+
+.settings-section {
+  @apply flex flex-col gap-4;
+}
+
+h2 {
+  @apply text-2xl;
+}
+
+textarea {
+  @apply resize-none rounded-lg border border-stone-300 bg-white px-2 py-1 shadow-sm shadow-stone-400 outline-none;
+}
+
+button:not(:disabled) {
+  cursor: pointer;
 }

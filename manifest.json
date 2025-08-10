@@ -17,9 +17,9 @@
     "background": {
         "service_worker": "dist/background/index.js",
         "scripts": [
-            "dist/browser-polyfill.js",
             "dist/background/background.js"
-        ]
+        ],
+        "type": "module"
     },
     "content_scripts": [
         {
@@ -27,7 +27,6 @@
                 "https://forocoches.com/*"
             ],
             "js": [
-                "dist/browser-polyfill.js",
                 "dist/content-script/index.js"
             ],
             "all_frames": true,
