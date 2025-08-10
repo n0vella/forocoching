@@ -36,9 +36,10 @@ export function filterStrings() {
 
   function checkTitle(thread: Thread) {
     for (const str of settings.filteredStrings) {
-      if (thread.title.includes(str)) {
+      if (thread.title.toLowerCase().includes(str)) {
         thread.hide()
         log(`Hidden thread ${thread.title} for containing "${str}"`)
+        return
       }
     }
   }
