@@ -12,7 +12,7 @@ type Thread = {
 
 function loadThreads(): Thread[] {
   const threads = document.querySelectorAll<HTMLDivElement>(
-    'div:has(div > span > [id^="thread_title_"])',
+    'div:has( > span > [id^="thread_title_"])',
   )
 
   const threadsData = []
