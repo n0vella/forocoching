@@ -15,7 +15,7 @@ export default defineConfig({
         background: resolve(__dirname, "src/background/background.ts"),
         "browser-polyfill": resolve(
           __dirname,
-          "node_modules/webextension-polyfill/dist/browser-polyfill.js",
+          "node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
         ),
       },
       output: {
