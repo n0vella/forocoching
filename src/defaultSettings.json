@@ -1,4 +1,5 @@
 {
     "filteredStrings": [],
-    "ignoredUsers": []
+    "ignoredUsers": [],
+    "trackIgnoredUsers": false
 }

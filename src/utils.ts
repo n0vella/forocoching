@@ -6,3 +6,28 @@ export async function loadSettings() {
     | undefined
   window.settings = { ...defaultSettings, ...settings }
 }
+
+export async function fetchIgnoredUsers() {
+  let headers
+
+  if (browser.cookies) {
+    const cookies = await browser.cookies.getAll({ domain: "forocoches.com" })
+
+    headers = {
+      Cookie: cookies
+        .map((cookie) => `${cookie.name}=${cookie.value}`)
+        .join("; "),
+    }
+  }
+
+  const r = await fetch(
+    "https://forocoches.com/foro/profile.php?do=ignorelist",
+    { headers },
+  )
+
+  const parser = new DOMParser()
+  const html = parser.parseFromString(await r.text(), "text/html")
+  return Array.from(html.querySelectorAll("#ignorelist > li > a")).map((iu) =>
+    iu.innerHTML.trim(),
+  )
+}

@@ -10,6 +10,7 @@ declare function log(...args: any[]): void
 interface Settings {
   filteredStrings: string[]
   ignoredUsers: string[]
+  trackIgnoredUsers: boolean
 }
 
 interface Window {
