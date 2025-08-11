@@ -9,15 +9,17 @@
     "permissions": [
         "tabs",
         "activeTab",
-        "storage"
+        "storage",
+        "cookies"
     ],
     "host_permissions": [
-        "<all_urls>"
+        "https://forocoches.com/*"
     ],
     "background": {
         "service_worker": "dist/background/index.js",
         "scripts": [
-            "dist/background/background.js"
+            "dist/browser-polyfill.js",
+            "dist/background.js"
         ],
         "type": "module"
     },
@@ -27,6 +29,7 @@
                 "https://forocoches.com/*"
             ],
             "js": [
+                "dist/browser-polyfill.js",
                 "dist/content-script/index.js"
             ],
             "all_frames": true,

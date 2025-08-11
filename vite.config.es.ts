@@ -7,12 +7,16 @@ export default defineConfig({
   base: "./",
   plugins: [tailwindcss()],
   build: {
-    outDir: resolve(__dirname, "dist/background"),
+    outDir: resolve(__dirname, "dist"),
     minify: !process.env.WATCH, // minify only on build
     rollupOptions: {
       input: {
         "settings/settings": resolve(__dirname, "src/settings/settings.html"),
         background: resolve(__dirname, "src/background/background.ts"),
+        "browser-polyfill": resolve(
+          __dirname,
+          "node_modules/webextension-polyfill/dist/browser-polyfill.js",
+        ),
       },
       output: {
         format: "es",
