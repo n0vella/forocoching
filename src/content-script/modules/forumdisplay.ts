@@ -28,7 +28,7 @@ function loadThreads(): Thread[] {
       author: authorSpan.innerText.split(" - ")[0].slice(1),
       content: link.title, // preview of content when hovering link
       hide: () => {
-        thread.style.display = "hidden"
+        thread.parentElement.parentElement.style.display = "none"
       },
     })
   }
