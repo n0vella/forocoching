@@ -1,18 +1,16 @@
-/**
- * returns id, title and content from threads
- */
-
 type Thread = {
-  id: string
   title: string
   author: string
   content: string
   hide: () => void
 }
 
+/**
+ * returns thread object
+ */
 function loadThreads(): Thread[] {
   const threads = document.querySelectorAll<HTMLDivElement>(
-    'div:has( > span > [id^="thread_title_"])',
+    'div:has( > div > span > a[href^="showthread.php?t="])',
   )
 
   const threadsData = []
@@ -20,15 +18,22 @@ function loadThreads(): Thread[] {
     const link = thread.querySelector<HTMLSpanElement>("a")
 
     const titleSpan = link.querySelector<HTMLSpanElement>("span")
-    const authorSpan = thread.querySelector<HTMLSpanElement>("div > a > span")
+
+    const author = mobile
+      ? thread.querySelector<HTMLSpanElement>(
+          'a[href^="showthread.php?p="] > div > span:nth-child(4)',
+        ).innerText
+      : thread
+          .querySelector<HTMLSpanElement>("div > div > a > span")
+          .innerText.split(" - ")[0]
+          .slice(1)
 
     threadsData.push({
-      id: link.id,
       title: titleSpan.innerText,
-      author: authorSpan.innerText.split(" - ")[0].slice(1),
+      author,
       content: link.title, // preview of content when hovering link
       hide: () => {
-        const threadRow = thread.parentElement.parentElement
+        const threadRow = thread.parentElement
         threadRow.style.display = "none"
         const separator = threadRow.nextElementSibling as HTMLElement
         separator.style.display = "none"
