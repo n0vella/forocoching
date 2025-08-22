@@ -28,7 +28,10 @@ function loadThreads(): Thread[] {
       author: authorSpan.innerText.split(" - ")[0].slice(1),
       content: link.title, // preview of content when hovering link
       hide: () => {
-        thread.parentElement.parentElement.style.display = "none"
+        const threadRow = thread.parentElement.parentElement
+        threadRow.style.display = "none"
+        const separator = threadRow.nextElementSibling as HTMLElement
+        separator.style.display = "none"
       },
     })
   }
