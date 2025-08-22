@@ -43,5 +43,10 @@
     },
     "action": {
         "default_title": "Forocoching"
+    },
+    "options_ui": {
+        "page": "dist/settings/settings.html",
+        "open_in_tab": true,
+        "browser_style": false
     }
 }
