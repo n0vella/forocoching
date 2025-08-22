@@ -11,7 +11,10 @@ function onSubmit(e: SubmitEvent) {
 
   const form = e.currentTarget as SettingsForm
 
-  const filteredStrings = form.filteredStrings.value.trim().split("\n")
+  const filteredStrings = form.filteredStrings.value
+    .trim()
+    .split("\n")
+    .filter((line) => line.length > 0)
   const ignoredUsers = form.ignoredUsers.value.trim().split("\n")
 
   const updatedSettings: Settings = {
