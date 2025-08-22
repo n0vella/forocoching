@@ -52,9 +52,15 @@ export function filterStrings() {
 
   function checkTitle(thread: Thread) {
     for (const str of settings.filteredStrings) {
-      if (thread.title.toLowerCase().includes(str)) {
+      const title = thread.title.toLowerCase()
+
+      if (
+        title.includes(" " + str + " ") ||
+        title.endsWith(" " + str) ||
+        title.startsWith(str + " ")
+      ) {
         thread.hide()
-        log(`Hidden thread ${thread.title} for containing "${str}"`)
+        log(`Hidden thread ${thread.title} because it contains "${str}"`)
         return
       }
     }
