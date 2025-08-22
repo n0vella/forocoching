@@ -15,7 +15,10 @@ function onSubmit(e: SubmitEvent) {
     .trim()
     .split("\n")
     .filter((line) => line.length > 0)
-  const ignoredUsers = form.ignoredUsers.value.trim().split("\n")
+  const ignoredUsers = form.ignoredUsers.value
+    .trim()
+    .split("\n")
+    .filter((line) => line.length > 0)
 
   const updatedSettings: Settings = {
     filteredStrings,
