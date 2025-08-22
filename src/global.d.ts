@@ -15,6 +15,8 @@ interface Settings {
 
 interface Window {
   settings: Settings
+  mobile: boolean
 }
 
 declare const settings: Settings
+declare const mobile: boolean

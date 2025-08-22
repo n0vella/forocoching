@@ -11,6 +11,10 @@ function log(...data: any[]) {
 async function main() {
   window.console = myConsole // return hijacked console
   window.log = log // convenience
+  window.mobile =
+    /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(
+      navigator.userAgent,
+    )
 
   await loadSettings()
   router()
