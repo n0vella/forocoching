@@ -23,17 +23,20 @@
       <div
         class="flex h-screen w-full flex-col gap-5 overflow-y-auto bg-zinc-50 p-10 pt-16"
       >
+        <h2>Filtrado por título</h2>
         <div class="settings-section">
-          <h2>Filtrado por título</h2>
           <span class="text-sm"
             >En cada linea escribir las palabras o frases que se quieran
             ocultar</span
           >
-          <textarea name="filteredStrings" class="h-40 w-96 text-sm"></textarea>
+          <textarea
+            name="filteredStrings"
+            class="user-input h-40 w-96 text-sm"
+          ></textarea>
         </div>
 
+        <h2>Usuarios ignorados</h2>
         <div class="settings-section">
-          <h2>Usuarios ignorados</h2>
           <div>
             <span class="text-sm">Uno por linea: </span>
             <span
@@ -42,26 +45,64 @@
               >[Cargar de tu lista del foro]</span
             >
           </div>
-          <textarea name="ignoredUsers" class="h-40 w-96 text-sm"></textarea>
+          <textarea
+            name="ignoredUsers"
+            class="user-input h-40 w-96 text-sm"
+          ></textarea>
           <label>
             <input
               name="trackIgnoredUsers"
               type="checkbox"
               class="accent-emerald-500"
             />
-            <span> Sincronizar con lista de ignorados del foro</span>
+            <span>Sincronizar con lista de ignorados del foro</span>
           </label>
         </div>
+
+        <h2>Editor</h2>
         <div class="settings-section">
-          <h2>Editor</h2>
           <label>
             <input
               name="socialMediaLinks"
               type="checkbox"
               class="accent-emerald-500"
             />
-            <span> Ayuda para pegar enlaces de YouTube, IG, Twitter...</span>
+            <span>Ayuda para pegar enlaces de YouTube, IG, Twitter...</span>
           </label>
+        </div>
+
+        <h2>IA</h2>
+        <div class="settings-section">
+          <h3>Datos del modelo</h3>
+          <div
+            class="ml-2 grid max-w-[500px] grid-cols-[max-content_1fr] items-center gap-x-3 gap-y-2"
+          >
+            <label for="endpoint">Endpoint:</label>
+            <input id="endpoint" name="endpoint" class="user-input w-full" />
+            <label for="apiKey">Api key:</label>
+            <input
+              id="apiKey"
+              type="password"
+              name="apiKey"
+              class="user-input w-full"
+            />
+            <label for="model">Modelo:</label>
+            <input id="model" name="model" class="user-input w-full" />
+          </div>
+          <h3>Clasificador de hilos</h3>
+          <label>
+            <input
+              name="enableTagThreads"
+              type="checkbox"
+              class="accent-emerald-500"
+            />
+            <span>Habilitar clasificador de hilos</span>
+          </label>
+          <span>Prompt:</span>
+          <textarea
+            name="prompt"
+            class="user-input h-40 w-96 text-sm"
+          ></textarea>
         </div>
       </div>
     </form>

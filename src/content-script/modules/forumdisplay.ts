@@ -1,9 +1,4 @@
-type Thread = {
-  title: string
-  author: string
-  content: string
-  hide: () => void
-}
+import { tagger } from "./ai"
 
 /**
  * returns thread object
@@ -82,4 +77,9 @@ export function filterStrings() {
     checkTitle(thread)
     checkAuthor(thread)
   }
+}
+
+export function tagThreads() {
+  const threads = loadThreads()
+  tagger(threads)
 }

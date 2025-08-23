@@ -1,19 +1,21 @@
-import { fetchIgnoredUsers, loadSettings } from "../utils"
+import { areObjectsEqual, fetchIgnoredUsers, loadSettings } from "../utils"
 
 interface SettingsForm extends HTMLFormElement {
   filteredStrings: HTMLTextAreaElement
   ignoredUsers: HTMLTextAreaElement
   trackIgnoredUsers: HTMLInputElement
   socialMediaLinks: HTMLInputElement
+
+  enableTagThreads: HTMLInputElement
+  endpoint: HTMLInputElement
+  apiKey: HTMLInputElement
+  model: HTMLInputElement
+  prompt: HTMLTextAreaElement
+
   submitButton: HTMLButtonElement
 }
 
-async function onSubmit(e: SubmitEvent) {
-  e.preventDefault()
-
-  const form = e.currentTarget as SettingsForm
-  form.submitButton.disabled = true
-
+function getUpdatedSettings(form: SettingsForm): Settings {
   const filteredStrings = form.filteredStrings.value
     .split("\n")
     .filter((line) => line.length > 0)
@@ -24,13 +26,28 @@ async function onSubmit(e: SubmitEvent) {
     .filter((line) => line.length > 0)
     .map((line) => line.trim())
 
-  const updatedSettings: Settings = {
+  return {
     filteredStrings,
     ignoredUsers,
     trackIgnoredUsers: form.trackIgnoredUsers.checked,
     socialMediaLinks: form.socialMediaLinks.checked,
+    ai: {
+      enableTagThreads: form.enableTagThreads.checked,
+      endpoint: form.endpoint.value,
+      apiKey: form.apiKey.value,
+      model: form.model.value,
+      prompt: form.prompt.value,
+    },
   }
+}
 
+async function onSubmit(e: SubmitEvent) {
+  e.preventDefault()
+
+  const form = e.currentTarget as SettingsForm
+  form.submitButton.disabled = true
+
+  const updatedSettings = getUpdatedSettings(form)
   // set settings
   await browser.storage.local.set({ settings: updatedSettings })
   await loadSettings()
@@ -43,7 +60,7 @@ async function setIgnoredUsers() {
 }
 
 // events
-const form = document.querySelector("form")
+const form = document.querySelector<SettingsForm>("form")
 const loadIgnoredusers =
   document.querySelector<HTMLSpanElement>("#loadIgnoredusers")
 
@@ -57,16 +74,18 @@ loadSettings().then(() => {
   form.trackIgnoredUsers.checked = settings.trackIgnoredUsers
   form.socialMediaLinks.checked = settings.socialMediaLinks
 
+  form.endpoint.value = settings.ai.endpoint
+  form.apiKey.value = settings.ai.apiKey
+  form.model.value = settings.ai.model
+  form.enableTagThreads.checked = settings.ai.enableTagThreads
+  form.prompt.value = settings.ai.prompt
+
   form.submitButton.disabled = true
 
   // detect changes and enable button
   form.addEventListener("input", () => {
-    const somethingChanged =
-      form.filteredStrings.value != settings.filteredStrings.join("\n") ||
-      form.ignoredUsers.value != settings.ignoredUsers.join("\n") ||
-      form.trackIgnoredUsers.checked != settings.trackIgnoredUsers ||
-      form.socialMediaLinks.checked != settings.socialMediaLinks
+    const updatedSettings = getUpdatedSettings(form)
 
-    form.submitButton.disabled = !somethingChanged
+    form.submitButton.disabled = areObjectsEqual(settings, updatedSettings)
   })
 })

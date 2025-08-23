@@ -1,7 +1,7 @@
 declare const browser: typeof import("webextension-polyfill")
 
 interface Message {
-  action: "log" | string
+  action: "log" | "loadModelResponse"
   content: any
 }
 
@@ -12,6 +12,13 @@ interface Settings {
   ignoredUsers: string[]
   trackIgnoredUsers: boolean
   socialMediaLinks: boolean
+  ai: {
+    enableTagThreads: boolean
+    endpoint: string
+    apiKey: string
+    model: string
+    prompt: string
+  }
 }
 
 interface Window {
@@ -21,3 +28,12 @@ interface Window {
 
 declare const settings: Settings
 declare const mobile: boolean
+
+type ChatMessage = import("openai/resources/index").ChatCompletionMessageParam
+
+interface Thread {
+  title: string
+  author: string
+  content: string
+  hide: () => void
+}

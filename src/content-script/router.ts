@@ -1,4 +1,4 @@
-import { filterStrings } from "./modules/forumdisplay"
+import { filterStrings, tagThreads } from "./modules/forumdisplay"
 import { updateIgnoredUsers } from "./modules/ignoredUsers"
 import { trackPastedLinks } from "./modules/editor"
 
@@ -6,6 +6,7 @@ export default function router() {
   switch (location.pathname) {
     case "/foro/forumdisplay.php":
       filterStrings()
+      tagThreads()
       return
     case "/foro/member.php":
       updateIgnoredUsers() // member profile shown after update ignored users
