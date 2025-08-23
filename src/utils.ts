@@ -1,10 +1,13 @@
 import defaultSettings from "./defaultSettings.json"
+import merge from "lodash/merge"
+import isEqual from "lodash/isEqual"
 
 export async function loadSettings() {
   const settings = (await browser.storage.local.get("settings")).settings as
     | Settings
     | undefined
-  window.settings = { ...defaultSettings, ...settings }
+
+  window.settings = merge(defaultSettings, settings)
 }
 
 export async function fetchIgnoredUsers() {
@@ -33,16 +36,5 @@ export async function fetchIgnoredUsers() {
 }
 
 export function areObjectsEqual(obj1: object, obj2: object) {
-  try {
-    for (const key in obj1) {
-      if (typeof obj1[key] == "object") {
-        if (!areObjectsEqual(obj1[key], obj2[key])) return false
-      } else {
-        if (obj1[key] != obj2[key]) return false
-      }
-    }
-    return true
-  } catch {
-    return false
-  }
+  return isEqual(obj1, obj2)
 }
