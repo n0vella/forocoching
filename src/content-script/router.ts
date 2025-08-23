@@ -1,5 +1,6 @@
 import { filterStrings } from "./modules/forumdisplay"
 import { updateIgnoredUsers } from "./modules/ignoredUsers"
+import { trackPastedLinks } from "./modules/editor"
 
 export default function router() {
   switch (location.pathname) {
@@ -12,5 +13,9 @@ export default function router() {
     case "/foro/profile.php":
       updateIgnoredUsers() // profile.php?do=ignorelist
       return
+    case "/foro/newthread.php":
+    case "/foro/newreply.php":
+    case "/foro/showthread.php":
+      trackPastedLinks()
   }
 }
