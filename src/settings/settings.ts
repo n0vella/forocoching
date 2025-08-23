@@ -71,8 +71,8 @@ function getUpdatedSettings(form: SettingsForm): Settings {
       )
 
       return {
-        tagName: tagName.value,
-        description: description.value,
+        tagName: tagName.value.trim(),
+        description: description.value.trim(),
         color: color.value,
       }
     })

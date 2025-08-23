@@ -34,7 +34,6 @@ export async function tagger(threads: Thread[]) {
   ])
 
   try {
-    console.log(response)
     const match = response.match(/\[.+\]/s)
 
     if (match.length === 0) {

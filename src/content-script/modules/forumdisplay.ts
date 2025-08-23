@@ -89,7 +89,9 @@ export async function tagThreads() {
   for (let i = 0; i < threads.length; i++) {
     if (threadTags[i] && threadTags[i] !== "otros") {
       const tag = settings.ai.tags.filter((t) => t.tagName == threadTags[i])[0]
-      threads[i].changeColor(tag.color)
+      if (tag) {
+        threads[i].changeColor(tag.color)
+      }
     }
   }
 }
