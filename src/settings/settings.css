@@ -4,6 +4,10 @@
   @apply flex flex-col gap-4;
 }
 
+.settings-section > *:not(h2) {
+  margin-left: 10px;
+}
+
 h2 {
   @apply text-2xl;
 }
