@@ -4,7 +4,6 @@ import { loadSettings } from "../utils"
 
 async function callAIModel(messages: ChatMessage[]) {
   await loadSettings()
-  console.log(settings)
 
   const client = new OpenAI({
     baseURL: settings.ai.endpoint,

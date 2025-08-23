@@ -12,6 +12,10 @@ h3 {
   @apply text-xl;
 }
 
+h4 {
+  @apply text-lg;
+}
+
 .user-input {
   @apply resize-none rounded-lg border border-stone-300 bg-white px-2 py-1 shadow-sm shadow-stone-400 outline-none;
 }
@@ -33,4 +37,10 @@ input[type="checkbox"] {
 
 button:not(:disabled) {
   cursor: pointer;
+}
+
+.tag-container {
+  display: flex;
+  gap: 4;
+  align-items: center;
 }

@@ -8,6 +8,7 @@
         "endpoint": "",
         "apiKey": "",
         "model": "",
-        "prompt": "Clasifica los siguientes temas de un foro en función de estos tags:\n{tags}\n\n-> Se te proporcionará una lista de títulos en orden y el contenido del tema\n-> Tu respuesta únicamente contendrá un array con las categorías correspondientes a cada hilo en el mismo orden en el que se te proporcionen los hilos\n-> Las categorías estarán escritas exactamente como están en las comillas."
+        "prompt": "Clasifica los siguientes temas de un foro en función de estos tags:\n\n{tags}\n\"otros\": Temas que no encajen en ninguna categoría\n\n-> Se te proporcionará una lista de títulos en orden y el contenido del tema\n-> Tu respuesta únicamente contendrá un array con las categorías correspondientes a cada hilo en el mismo orden en el que se te proporcionen los hilos\n-> Las categorías estarán escritas exactamente como están en las comillas.",
+        "tags": []
     }
 }

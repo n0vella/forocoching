@@ -7,6 +7,12 @@ interface Message {
 
 declare function log(...args: any[]): void
 
+interface Tag {
+  tagName: string
+  description: string
+  color: string
+}
+
 interface Settings {
   filteredStrings: string[]
   ignoredUsers: string[]
@@ -18,6 +24,7 @@ interface Settings {
     apiKey: string
     model: string
     prompt: string
+    tags: Tag[]
   }
 }
 
@@ -36,4 +43,5 @@ interface Thread {
   author: string
   content: string
   hide: () => void
+  changeColor: (color: string) => void
 }

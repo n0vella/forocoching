@@ -90,19 +90,42 @@
             <input id="model" name="model" class="user-input w-full" />
           </div>
           <h3>Clasificador de hilos</h3>
-          <label>
-            <input
-              name="enableTagThreads"
-              type="checkbox"
-              class="accent-emerald-500"
-            />
-            <span>Habilitar clasificador de hilos</span>
-          </label>
-          <span>Prompt:</span>
-          <textarea
-            name="prompt"
-            class="user-input h-40 w-96 text-sm"
-          ></textarea>
+          <div class="settings-section">
+            <label>
+              <input
+                name="enableTagThreads"
+                type="checkbox"
+                class="accent-emerald-500"
+              />
+              <span>Habilitar clasificador de hilos</span>
+            </label>
+
+            <div class="flex flex-col gap-2">
+              <h4>Prompt:</h4>
+              <span class="text-sm"
+                >Se reemplazara "{tags}" por los tags de mas abajo
+                <span
+                  id="restoreDefaultPrompt"
+                  class="cursor-pointer text-sm text-emerald-700"
+                  >[Restaurar prompt por defecto]</span
+                ></span
+              >
+              <textarea
+                name="prompt"
+                class="user-input h-40 max-w-[500px] text-sm"
+              ></textarea>
+            </div>
+
+            <h4>Tags:</h4>
+            <div id="tags" class="flex flex-col gap-2"></div>
+            <button
+              id="addTag"
+              type="button"
+              class="flex h-8 w-fit items-center justify-center rounded-lg border-2 border-emerald-600 bg-emerald-500 px-2 py-1 text-white enabled:hover:text-black"
+            >
+              <span>AÑADIR TAG</span>
+            </button>
+          </div>
         </div>
       </div>
     </form>

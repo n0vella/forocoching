@@ -6,7 +6,10 @@ function call(messages: ChatMessage[]): Promise<string> {
 }
 
 export async function tagger(threads: Thread[]) {
-  const prompt = settings.ai.prompt
+  const tags = settings.ai.tags
+    .map(({ tagName: name, description }) => `"${name}": ${description}`)
+    .join("\n")
+  const prompt = settings.ai.prompt.replace("{tags}", tags)
 
   const parsedThreads = threads
     .map(
@@ -34,9 +37,9 @@ export async function tagger(threads: Thread[]) {
       "`,
     },
   ])
-  const threadTags = JSON.parse(response.trim())
-  for (let i = 0; i < threads.length; i++) {
-    // console.log(t)
-    console.log(threads[i].title, " -> ", threadTags[i])
+  try {
+    return JSON.parse(response.trim())
+  } catch {
+    console.error("Error parsing model response: ", response.trim())
   }
 }

@@ -1,4 +1,5 @@
 import { areObjectsEqual, fetchIgnoredUsers, loadSettings } from "../utils"
+import defaultSettings from "../defaultSettings.json"
 
 interface SettingsForm extends HTMLFormElement {
   filteredStrings: HTMLTextAreaElement
@@ -15,6 +16,41 @@ interface SettingsForm extends HTMLFormElement {
   submitButton: HTMLButtonElement
 }
 
+function appendTagElement(tag: Tag) {
+  const tagsDiv = document.querySelector<HTMLDivElement>("#tags")
+
+  const tagContainer = document.createElement("div")
+  tagContainer.id = "tag-" + tagsDiv.childNodes.length
+  tagContainer.classList.add("tag-container")
+
+  tagContainer.innerHTML = `
+    <input placeholder="tag" value="${tag.tagName}" class="user-input" />
+    <input placeholder="descripción" value="${tag.description}" class="user-input w-96" />
+    <input type="color" title="color" value="${tag.color}" class="rounded-lg cursor-pointer"/>
+    `
+
+  tagsDiv.appendChild(tagContainer)
+}
+
+function loadTags() {
+  for (const tag of settings.ai.tags) {
+    appendTagElement(tag)
+  }
+}
+
+function addTag() {
+  appendTagElement({
+    tagName: "",
+    description: "",
+    color: "",
+  })
+}
+
+function setDefaultPrompt() {
+  console.log(defaultSettings)
+  form.prompt.value = defaultSettings.ai.prompt
+}
+
 function getUpdatedSettings(form: SettingsForm): Settings {
   const filteredStrings = form.filteredStrings.value
     .split("\n")
@@ -25,6 +61,22 @@ function getUpdatedSettings(form: SettingsForm): Settings {
     .split("\n")
     .filter((line) => line.length > 0)
     .map((line) => line.trim())
+
+  const tags = Array.from(
+    document.querySelectorAll<HTMLDivElement>('div[id^="tag-"]'),
+  )
+    .map((tag) => {
+      const [tagName, description, color] = Array.from(
+        tag.querySelectorAll<HTMLInputElement>("input"),
+      )
+
+      return {
+        tagName: tagName.value,
+        description: description.value,
+        color: color.value,
+      }
+    })
+    .filter((tag) => tag.tagName && tag.description)
 
   return {
     filteredStrings,
@@ -37,6 +89,7 @@ function getUpdatedSettings(form: SettingsForm): Settings {
       apiKey: form.apiKey.value,
       model: form.model.value,
       prompt: form.prompt.value,
+      tags,
     },
   }
 }
@@ -63,9 +116,15 @@ async function setIgnoredUsers() {
 const form = document.querySelector<SettingsForm>("form")
 const loadIgnoredusers =
   document.querySelector<HTMLSpanElement>("#loadIgnoredusers")
+const addTagButton = document.querySelector<HTMLButtonElement>("#addTag")
+const restoreDefaultPrompt = document.querySelector<HTMLSpanElement>(
+  "#restoreDefaultPrompt",
+)
 
 form.addEventListener("submit", onSubmit)
 loadIgnoredusers.addEventListener("click", setIgnoredUsers)
+addTagButton.addEventListener("click", addTag)
+restoreDefaultPrompt.addEventListener("click", setDefaultPrompt)
 
 // set values from settings
 loadSettings().then(() => {
@@ -79,6 +138,7 @@ loadSettings().then(() => {
   form.model.value = settings.ai.model
   form.enableTagThreads.checked = settings.ai.enableTagThreads
   form.prompt.value = settings.ai.prompt
+  loadTags()
 
   form.submitButton.disabled = true
 
