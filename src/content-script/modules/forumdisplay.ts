@@ -87,9 +87,7 @@ export async function tagThreads() {
   const threadTags = await tagger(threads)
 
   for (let i = 0; i < threads.length; i++) {
-    console.log(threads[i].title, " -> ", threadTags[i])
     if (threadTags[i] && threadTags[i] !== "otros") {
-      console.log(settings.ai.tags)
       const tag = settings.ai.tags.filter((t) => t.tagName == threadTags[i])[0]
       threads[i].changeColor(tag.color)
     }

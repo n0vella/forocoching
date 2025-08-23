@@ -13,14 +13,14 @@ export async function tagger(threads: Thread[]) {
 
   const parsedThreads = threads
     .map(
-      ({ title, content }) => `
-    Título: ${title}
-    Contenido:
-    ${content}
-    ---
+      ({ title, content }) => `{
+    "title": ${JSON.stringify(title)},
+    "content": ${JSON.stringify(content)},
+    "tag": ""
+    }
   `,
     )
-    .join("\n")
+    .join(",\n")
 
   const response = await call([
     {
@@ -29,17 +29,22 @@ export async function tagger(threads: Thread[]) {
     },
     {
       role: "user",
-      content: parsedThreads,
-    },
-    {
-      role: "assistant",
-      content: `[
-      "`,
+      content: "[" + parsedThreads + "]",
     },
   ])
+
   try {
-    return JSON.parse(response.trim())
+    console.log(response)
+    const match = response.match(/\[.+\]/s)
+
+    if (match.length === 0) {
+      console.error("Couldn't find expected array in response: ", response)
+      return []
+    }
+
+    return JSON.parse(match[0]).map(({ tag }) => tag)
   } catch {
-    console.error("Error parsing model response: ", response.trim())
+    console.error("Error parsing model response: ", response)
+    return []
   }
 }
