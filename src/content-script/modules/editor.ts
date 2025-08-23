@@ -1,4 +1,4 @@
-function pasteLink(e: ClipboardEvent, iframe: HTMLIFrameElement) {
+function pasteLink(e: ClipboardEvent, callback: (text: string) => void) {
   const text = e.clipboardData?.getData("text")
   if (!text) return
 
@@ -15,24 +15,22 @@ function pasteLink(e: ClipboardEvent, iframe: HTMLIFrameElement) {
 
     // embed social media link
     if (match && match[1]) {
-      insertTextOnEditor(
-        e,
-        iframe,
-        `[${platform.toUpperCase()}]${match[1]}[/${platform.toUpperCase()}]<br>`,
+      e.preventDefault()
+      e.stopPropagation()
+
+      callback(
+        `[${platform.toUpperCase()}]${match[1]}[/${platform.toUpperCase()}]`,
       )
       return
     }
   }
 }
 
-function insertTextOnEditor(
+function insertTextOnIframeEditor(
   e: ClipboardEvent,
   iframe: HTMLIFrameElement,
   text: string,
 ) {
-  e.preventDefault()
-  e.stopPropagation()
-
   const textField = e.target as HTMLElement
   if (!textField) return
 
@@ -41,7 +39,7 @@ function insertTextOnEditor(
 
   removeTrailingLineBreaks(target)
 
-  target.innerHTML += text
+  target.innerHTML += text + "<br>"
   moveCursorToEnd(iframe, target)
 
   e.preventDefault()
@@ -83,16 +81,27 @@ export function moveCursorToEnd(
 export function trackPastedLinks() {
   if (!settings.socialMediaLinks) return
 
-  const iframe = document.querySelector(
-    "#vB_Editor_001_iframe, #vB_Editor_QR_iframe",
-  ) as HTMLIFrameElement
-  const iframeDoc = iframe?.contentDocument || iframe?.contentWindow?.document
-  if (!iframeDoc) return
+  if (mobile && location.pathname === "/foro/showthread.php") {
+    const textArea = document.querySelector<HTMLTextAreaElement>(
+      "#vB_Editor_QR_textarea",
+    )
+    textArea.addEventListener("paste", (e: ClipboardEvent) => {
+      pasteLink(e, (text) => {
+        textArea.value += text
+      })
+    })
+  } else {
+    const iframe = document.querySelector(
+      "#vB_Editor_001_iframe, #vB_Editor_QR_iframe",
+    ) as HTMLIFrameElement
+    const iframeDoc = iframe?.contentDocument || iframe?.contentWindow?.document
+    if (!iframeDoc) return
 
-  const handlePaste = (e: ClipboardEvent) => {
-    pasteLink(e, iframe)
+    const handlePaste = (e: ClipboardEvent) => {
+      pasteLink(e, (text) => insertTextOnIframeEditor(e, iframe, text))
+    }
+
+    const textArea = iframeDoc.querySelector("body")
+    textArea?.addEventListener("paste", handlePaste)
   }
-
-  const textArea = iframeDoc.querySelector("body")
-  textArea?.addEventListener("paste", handlePaste)
 }
