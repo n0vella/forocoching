@@ -7,7 +7,7 @@ export async function loadSettings() {
     | Settings
     | undefined
 
-  window.settings = merge(defaultSettings, settings)
+  window.settings = merge({}, defaultSettings, settings)
 }
 
 export async function fetchIgnoredUsers() {
