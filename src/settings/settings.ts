@@ -4,6 +4,7 @@ interface SettingsForm extends HTMLFormElement {
   filteredStrings: HTMLTextAreaElement
   ignoredUsers: HTMLTextAreaElement
   trackIgnoredUsers: HTMLInputElement
+  socialMediaLinks: HTMLInputElement
   submitButton: HTMLButtonElement
 }
 
@@ -27,6 +28,7 @@ async function onSubmit(e: SubmitEvent) {
     filteredStrings,
     ignoredUsers,
     trackIgnoredUsers: form.trackIgnoredUsers.checked,
+    socialMediaLinks: form.socialMediaLinks.checked,
   }
 
   // set settings
@@ -53,6 +55,8 @@ loadSettings().then(() => {
   form.filteredStrings.value = settings.filteredStrings.join("\n")
   form.ignoredUsers.value = settings.ignoredUsers.join("\n")
   form.trackIgnoredUsers.checked = settings.trackIgnoredUsers
+  form.socialMediaLinks.checked = settings.socialMediaLinks
+
   form.submitButton.disabled = true
 
   // detect changes and enable button
@@ -60,7 +64,8 @@ loadSettings().then(() => {
     const somethingChanged =
       form.filteredStrings.value != settings.filteredStrings.join("\n") ||
       form.ignoredUsers.value != settings.ignoredUsers.join("\n") ||
-      form.trackIgnoredUsers.checked != settings.trackIgnoredUsers
+      form.trackIgnoredUsers.checked != settings.trackIgnoredUsers ||
+      form.socialMediaLinks.checked != settings.socialMediaLinks
 
     form.submitButton.disabled = !somethingChanged
   })

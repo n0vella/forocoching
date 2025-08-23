@@ -11,6 +11,7 @@ interface Settings {
   filteredStrings: string[]
   ignoredUsers: string[]
   trackIgnoredUsers: boolean
+  socialMediaLinks: boolean
 }
 
 interface Window {

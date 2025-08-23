@@ -81,6 +81,8 @@ export function moveCursorToEnd(
 }
 
 export function trackPastedLinks() {
+  if (!settings.socialMediaLinks) return
+
   const iframe = document.querySelector(
     "#vB_Editor_001_iframe, #vB_Editor_QR_iframe",
   ) as HTMLIFrameElement
