@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 .settings-section {
-  @apply ml-2 flex flex-col gap-4;
+  @apply flex flex-col gap-4 sm:ml-2;
 }
 
 h2 {
@@ -43,4 +43,5 @@ button:not(:disabled) {
   display: flex;
   gap: 4;
   align-items: center;
+  @apply max-sm:flex-col;
 }

@@ -24,8 +24,8 @@ function appendTagElement(tag: Tag) {
   tagContainer.classList.add("tag-container")
 
   tagContainer.innerHTML = `
-    <input placeholder="tag" value="${tag.tagName}" class="user-input" />
-    <input placeholder="descripción" value="${tag.description}" class="user-input w-96" />
+    <input placeholder="tag" value="${tag.tagName}" class="user-input max-sm:w-full" />
+    <input placeholder="descripción" value="${tag.description}" class="user-input w-full sm:w-xl" />
     <input type="color" title="color" value="${tag.color}" class="rounded-lg cursor-pointer"/>
     `
 

@@ -21,7 +21,7 @@
         </button>
       </div>
       <div
-        class="flex h-screen w-full flex-col gap-5 overflow-y-auto bg-zinc-50 p-10 pt-16"
+        class="flex min-h-screen w-full flex-col gap-5 overflow-y-auto bg-zinc-50 p-10 pt-16 max-sm:p-4"
       >
         <h2>Filtrado por título</h2>
         <div class="settings-section">
@@ -31,14 +31,14 @@
           >
           <textarea
             name="filteredStrings"
-            class="user-input h-40 w-96 text-sm"
+            class="user-input h-40 w-full max-w-md text-sm"
           ></textarea>
         </div>
 
         <h2>Usuarios ignorados</h2>
         <div class="settings-section">
           <div>
-            <span class="text-sm">Uno por linea: </span>
+            <span class="text-sm">Uno por línea: </span>
             <span
               id="loadIgnoredusers"
               class="cursor-pointer text-sm text-emerald-700"
@@ -47,7 +47,7 @@
           </div>
           <textarea
             name="ignoredUsers"
-            class="user-input h-40 w-96 text-sm"
+            class="user-input h-40 w-full max-w-md text-sm"
           ></textarea>
           <label>
             <input
@@ -75,7 +75,7 @@
         <div class="settings-section">
           <h3>Datos del modelo</h3>
           <div
-            class="ml-2 grid max-w-[500px] grid-cols-[max-content_1fr] items-center gap-x-3 gap-y-2"
+            class="flex max-w-[500px] flex-col items-center gap-x-3 gap-y-2 sm:ml-2 sm:grid sm:grid-cols-[max-content_1fr]"
           >
             <label for="endpoint">Endpoint:</label>
             <input id="endpoint" name="endpoint" class="user-input w-full" />
@@ -103,7 +103,7 @@
             <div class="flex flex-col gap-2">
               <h4>Prompt:</h4>
               <span class="text-sm"
-                >Se reemplazara "{tags}" por los tags de mas abajo
+                >Se reemplazará "{tags}" por los tags de más abajo
                 <span
                   id="restoreDefaultPrompt"
                   class="cursor-pointer text-sm text-emerald-700"
@@ -112,12 +112,15 @@
               >
               <textarea
                 name="prompt"
-                class="user-input h-40 max-w-[500px] text-sm"
+                class="user-input h-40 w-full max-w-xl text-sm"
               ></textarea>
             </div>
 
             <h4>Tags:</h4>
-            <div id="tags" class="flex flex-col gap-2"></div>
+            <div
+              id="tags"
+              class="flex max-w-full flex-col gap-4 sm:gap-2"
+            ></div>
             <button
               id="addTag"
               type="button"
