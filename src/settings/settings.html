@@ -21,7 +21,7 @@
         </button>
       </div>
       <div
-        class="flex min-h-screen w-full flex-col gap-5 overflow-y-auto bg-zinc-50 p-10 pt-16 max-sm:p-4"
+        class="flex min-h-screen w-full flex-col gap-5 overflow-y-auto bg-zinc-50 p-10 pt-16 max-sm:px-4"
       >
         <h2>Filtrado por título</h2>
         <div class="settings-section">
@@ -118,17 +118,18 @@
               </div>
 
               <h4>Tags:</h4>
-              <div
-                id="tags"
-                class="flex max-w-full flex-col gap-4 sm:gap-2"
-              ></div>
-              <button
-                id="addTag"
-                type="button"
-                class="flex h-8 w-fit items-center justify-center rounded-lg border-2 border-emerald-600 bg-emerald-500 px-2 py-1 text-white enabled:hover:text-black"
-              >
-                <span>AÑADIR TAG</span>
-              </button>
+              <div class="flex w-fit max-w-full flex-col gap-3">
+                <div id="tags" class="flex flex-col gap-4 sm:gap-2"></div>
+                <div class="flex justify-end">
+                  <button
+                    id="addTag"
+                    type="button"
+                    class="flex h-10 w-fit items-center justify-center rounded-lg border-2 border-emerald-600 bg-emerald-500 px-2 py-1 text-white enabled:hover:text-black"
+                  >
+                    <span class="mb-1 text-3xl">+</span>
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
