@@ -16,20 +16,36 @@ interface SettingsForm extends HTMLFormElement {
   submitButton: HTMLButtonElement
 }
 
+function updateSaveButtonState() {
+  const updatedSettings = getUpdatedSettings(form)
+  form.submitButton.disabled = areObjectsEqual(settings, updatedSettings)
+}
+
 function appendTagElement(tag: Tag) {
   const tagsDiv = document.querySelector<HTMLDivElement>("#tags")
 
   const tagContainer = document.createElement("div")
-  tagContainer.id = "tag-" + tagsDiv.childNodes.length
+  const tagId = tagsDiv.childNodes.length + 1
+  tagContainer.id = "tag-" + tagId
   tagContainer.classList.add("tag-container")
 
   tagContainer.innerHTML = `
     <input placeholder="tag" value="${tag.tagName}" class="user-input max-sm:w-full" />
     <input placeholder="descripción" value="${tag.description}" class="user-input w-xl max-w-full" />
     <input type="color" title="color" value="${tag.color}" class="rounded-lg cursor-pointer"/>
+    <button type="button" class="settings-button h-8">
+      <span class="mb-1 text-3xl">-</span>
+    </button>
     `
 
   tagsDiv.appendChild(tagContainer)
+
+  const removeButton = tagContainer.querySelector("button")
+
+  removeButton.addEventListener("click", () => {
+    tagsDiv.querySelector("#tag-" + tagId).remove()
+    updateSaveButtonState()
+  })
 }
 
 function loadTags() {
@@ -63,7 +79,7 @@ function getUpdatedSettings(form: SettingsForm): Settings {
     .map((line) => line.trim())
 
   const tags = Array.from(
-    document.querySelectorAll<HTMLDivElement>('div[id^="tag-"]'),
+    document.querySelectorAll<HTMLDivElement>('#tags > div[id^="tag-"]'),
   )
     .map((tag) => {
       const [tagName, description, color] = Array.from(
@@ -150,9 +166,5 @@ loadSettings().then(() => {
   form.submitButton.disabled = true
 
   // detect changes and enable button
-  form.addEventListener("input", () => {
-    const updatedSettings = getUpdatedSettings(form)
-
-    form.submitButton.disabled = areObjectsEqual(settings, updatedSettings)
-  })
+  form.addEventListener("input", updateSaveButtonState)
 })

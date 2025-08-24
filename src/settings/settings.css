@@ -45,3 +45,7 @@ button:not(:disabled) {
   align-items: center;
   @apply w-fit max-w-full max-sm:flex-col;
 }
+
+.settings-button {
+  @apply flex w-fit items-center justify-center rounded-lg border-2 border-emerald-600 bg-emerald-500 px-2 py-1 text-white enabled:hover:text-black;
+}
