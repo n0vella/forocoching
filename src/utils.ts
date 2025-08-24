@@ -3,18 +3,24 @@ import merge from "lodash/merge"
 import isEqual from "lodash/isEqual"
 
 export async function loadSettings() {
-  const settings = (await browser.storage.local.get("settings")).settings as
+  const settings = (await chrome.storage.local.get("settings")).settings as
     | Settings
     | undefined
 
-  window.settings = merge({}, defaultSettings, settings)
+  const loadedSettings = merge({ ...defaultSettings }, settings)
+
+  if (typeof window !== "undefined") {
+    window.settings = loadedSettings
+  }
+
+  return loadedSettings
 }
 
 export async function fetchIgnoredUsers() {
   let headers
 
-  if (browser.cookies) {
-    const cookies = await browser.cookies.getAll({ domain: "forocoches.com" })
+  if (chrome.cookies) {
+    const cookies = await chrome.cookies.getAll({ domain: "forocoches.com" })
 
     headers = {
       Cookie: cookies

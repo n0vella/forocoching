@@ -1,5 +1,5 @@
 function call(messages: ChatMessage[]): Promise<string> {
-  return browser.runtime.sendMessage({
+  return chrome.runtime.sendMessage({
     action: "loadModelResponse",
     content: messages,
   })
@@ -36,14 +36,15 @@ export async function tagger(threads: Thread[]) {
   try {
     const match = response.match(/\[.+\]/s)
 
-    if (match.length === 0) {
+    if (!match) {
       console.error("Couldn't find expected array in response: ", response)
       return []
     }
 
     return JSON.parse(match[0]).map(({ tag }) => tag)
-  } catch {
-    console.error("Error parsing model response: ", response)
+  } catch (e) {
+    console.error("Error parsing model response: ", e)
+    log("response body", response)
     return []
   }
 }

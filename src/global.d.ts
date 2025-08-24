@@ -1,5 +1,3 @@
-declare const browser: typeof import("webextension-polyfill")
-
 interface Message {
   action: "log" | "loadModelResponse"
   content: any

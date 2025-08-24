@@ -12,11 +12,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         "settings/settings": resolve(__dirname, "src/settings/settings.html"),
-        background: resolve(__dirname, "src/background/background.ts"),
-        "browser-polyfill": resolve(
-          __dirname,
-          "node_modules/webextension-polyfill/dist/browser-polyfill.min.js",
-        ),
+        background: resolve(__dirname, "src/background/background.ts")
       },
       output: {
         format: "es",
