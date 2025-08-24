@@ -6,7 +6,10 @@ export default function router() {
   switch (location.pathname) {
     case "/foro/forumdisplay.php":
       filterStrings()
-      tagThreads()
+      if (settings.ai.enableTagThreads) {
+        tagThreads()
+      }
+
       return
     case "/foro/member.php":
       updateIgnoredUsers() // member profile shown after update ignored users

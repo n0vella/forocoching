@@ -112,6 +112,11 @@ async function setIgnoredUsers() {
   form.ignoredUsers.value = ignoredUsers.join("\n")
 }
 
+function setTagMenuVisibility() {
+  const tagMenu = document.querySelector<HTMLDivElement>("#tag-menu")
+  tagMenu.hidden = !form.enableTagThreads.checked
+}
+
 // events
 const form = document.querySelector<SettingsForm>("form")
 const loadIgnoredusers =
@@ -125,6 +130,7 @@ form.addEventListener("submit", onSubmit)
 loadIgnoredusers.addEventListener("click", setIgnoredUsers)
 addTagButton.addEventListener("click", addTag)
 restoreDefaultPrompt.addEventListener("click", setDefaultPrompt)
+form.enableTagThreads.addEventListener("change", setTagMenuVisibility)
 
 // set values from settings
 loadSettings().then(() => {
@@ -139,6 +145,7 @@ loadSettings().then(() => {
   form.enableTagThreads.checked = settings.ai.enableTagThreads
   form.prompt.value = settings.ai.prompt
   loadTags()
+  setTagMenuVisibility()
 
   form.submitButton.disabled = true
 
