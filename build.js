@@ -1,5 +1,5 @@
 import fs from "fs"
-import manifest from "./manifest.json" assert { type: 'json' }
+import manifest from "./manifest.json" with { type: 'json' };
 import archiver from "archiver"
 
 console.log("Creating zip")
