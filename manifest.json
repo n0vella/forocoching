@@ -37,7 +37,8 @@
     "browser_specific_settings": {
         "gecko": {
             "id": "{a76f92a1-2d47-4b1f-bc2c-5fc9e8dfb93f}"
-        }
+        },
+        "gecko_android": {}
     },
     "action": {
         "default_title": "Forocoching"
