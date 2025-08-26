@@ -33,6 +33,14 @@ function appendTagElement(tag: Tag) {
     <input placeholder="tag" value="${tag.tagName}" class="user-input max-sm:w-full" />
     <input placeholder="descripción" value="${tag.description}" class="user-input w-xl max-w-full" />
     <input type="color" title="color" value="${tag.color}" class="rounded-lg cursor-pointer"/>
+
+    <label class="eye-checkbox">
+      <input type="checkbox" value="${tag.hide}" class="rounded-lg cursor-pointer"/>
+      <svg id="closedEye" xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye-off"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" /><path d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87" /><path d="M3 3l18 18" /></svg>
+
+      <svg id="openEye" xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-eye"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" /><path d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6" /></svg>
+    </label>
+
     <button type="button" class="settings-button h-8">
       <span class="mb-1 text-3xl">-</span>
     </button>
@@ -46,6 +54,21 @@ function appendTagElement(tag: Tag) {
     tagsDiv.querySelector("#tag-" + tagId).remove()
     updateSaveButtonState()
   })
+
+  const hideButton = tagContainer.querySelector<HTMLInputElement>(
+    ".eye-checkbox > input",
+  )
+
+  const hideLabel = () =>
+    (hideButton.checked ? "Mostrar" : "Ocultar") +
+    ` hilos con el tag "${tag.tagName}"`
+
+  hideButton.parentElement.title = hideLabel()
+
+  hideButton.addEventListener(
+    "click",
+    () => (hideButton.parentElement.title = hideLabel()),
+  )
 }
 
 function loadTags() {
@@ -59,6 +82,7 @@ function addTag() {
     tagName: "",
     description: "",
     color: "",
+    hide: false,
   })
 }
 
@@ -82,7 +106,7 @@ function getUpdatedSettings(form: SettingsForm): Settings {
     document.querySelectorAll<HTMLDivElement>('#tags > div[id^="tag-"]'),
   )
     .map((tag) => {
-      const [tagName, description, color] = Array.from(
+      const [tagName, description, color, hide] = Array.from(
         tag.querySelectorAll<HTMLInputElement>("input"),
       )
 
@@ -90,6 +114,7 @@ function getUpdatedSettings(form: SettingsForm): Settings {
         tagName: tagName.value.trim(),
         description: description.value.trim(),
         color: color.value,
+        hide: hide.checked,
       }
     })
     .filter((tag) => tag.tagName && tag.description)

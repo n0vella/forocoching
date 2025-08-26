@@ -12,7 +12,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         "settings/settings": resolve(__dirname, "src/settings/settings.html"),
-        background: resolve(__dirname, "src/background/background.ts")
+        background: resolve(__dirname, "src/background/background.ts"),
       },
       output: {
         format: "es",
@@ -20,6 +20,6 @@ export default defineConfig({
         assetFileNames: "assets/[name][extname]",
       },
     },
-    emptyOutDir: true
+    emptyOutDir: true,
   },
 })

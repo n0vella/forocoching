@@ -49,3 +49,23 @@ button:not(:disabled) {
 .settings-button {
   @apply flex w-fit items-center justify-center rounded-lg border-2 border-emerald-600 bg-emerald-500 px-2 py-1 text-white enabled:hover:text-black;
 }
+
+.eye-checkbox {
+  cursor: pointer;
+}
+
+.eye-checkbox > input[type="checkbox"] {
+  display: none;
+}
+
+.eye-checkbox:has(input[type="checkbox"]) > #openEye {
+  display: none;
+}
+
+.eye-checkbox:has(input[type="checkbox"]:checked) > #openEye {
+  display: block;
+}
+
+.eye-checkbox:has(input[type="checkbox"]:checked) > #closedEye {
+  display: none;
+}

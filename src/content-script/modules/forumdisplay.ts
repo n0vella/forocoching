@@ -89,8 +89,17 @@ export async function tagThreads() {
   for (let i = 0; i < threads.length; i++) {
     if (threadTags[i] && threadTags[i] !== "otros") {
       const tag = settings.ai.tags.filter((t) => t.tagName == threadTags[i])[0]
+      const thread = threads[i]
+
       if (tag) {
-        threads[i].changeColor(tag.color)
+        if (tag.hide) {
+          thread.hide()
+          log(
+            `Hidden thread ${thread.title} because it has been classified as "${tag.tagName}"`,
+          )
+        } else {
+          thread.changeColor(tag.color)
+        }
       }
     }
   }
