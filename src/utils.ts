@@ -3,7 +3,7 @@ import merge from "lodash/merge"
 import isEqual from "lodash/isEqual"
 
 export async function loadSettings() {
-  const settings = (await chrome.storage.local.get("settings")).settings as
+  const settings = (await chrome.storage.sync.get("settings")).settings as
     | Settings
     | undefined
 

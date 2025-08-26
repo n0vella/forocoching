@@ -9,6 +9,7 @@ interface Tag {
   tagName: string
   description: string
   color: string
+  hide: boolean
 }
 
 interface Settings {

@@ -118,7 +118,7 @@ async function onSubmit(e: SubmitEvent) {
 
   const updatedSettings = getUpdatedSettings(form)
   // set settings
-  await chrome.storage.local.set({ settings: updatedSettings })
+  await chrome.storage.sync.set({ settings: updatedSettings })
   await loadSettings()
 }
 

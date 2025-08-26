@@ -6,7 +6,7 @@ export async function updateIgnoredUsers() {
   const ignoredUsers = await fetchIgnoredUsers()
 
   if (ignoredUsers !== settings.ignoredUsers) {
-    chrome.storage.local.set({
+    chrome.storage.sync.set({
       settings: {
         ...settings,
         ignoredUsers,
