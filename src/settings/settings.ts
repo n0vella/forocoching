@@ -31,7 +31,7 @@ function appendTagElement(tag: Tag) {
 
   tagContainer.innerHTML = `
     <input placeholder="tag" value="${tag.tagName}" class="user-input max-sm:w-full" />
-    <input placeholder="descripción" value="${tag.description}" class="user-input w-xl max-w-full" />
+    <input placeholder="descripción" value="${tag.description.replace(/"/g, "&quot;")}" class="user-input w-xl max-w-full" />
     <input type="color" title="color" value="${tag.color}" class="rounded-lg cursor-pointer"/>
 
     <label class="eye-checkbox">
