@@ -8,7 +8,26 @@
         "endpoint": "",
         "apiKey": "",
         "model": "",
-        "prompt": "Completa el siguiente diccionario asignando tags a los siguientes temas de un foro:\n\\nLos tags son:\n{tags}\n\"otros\": Temas que no encajen en ninguna categoría",
-        "tags": []
+        "prompt": "Completa el siguiente diccionario asignando tags a los siguientes temas de un foro:\n\nLos tags son:\n{tags}\n\"otros\": Temas que no encajen en ninguna categoría\n\nResponde con el mismo JSON únicamente con las propiedades \"title\" y \"tag\"",
+        "tags": [
+            {
+                "color": "#86198f",
+                "description": "Temas sobre política española o internacional",
+                "hide": false,
+                "tagName": "política"
+            },
+            {
+                "color": "#16a34a",
+                "description": "Temas sobre futbol, peñas deportivas, a veces incluyen \"+18\" en el titulo",
+                "hide": false,
+                "tagName": "deportes"
+            },
+            {
+                "color": "#dc2626",
+                "description": "Temas con contenido sexual, para ser de esta categoría el título debe incluir obligatoriamente \"+18\" o \"+16\"",
+                "hide": false,
+                "tagName": "porno"
+            }
+        ]
     }
 }
