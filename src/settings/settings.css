@@ -58,14 +58,14 @@ button:not(:disabled) {
   display: none;
 }
 
-.eye-checkbox:has(input[type="checkbox"]) > #openEye {
+.eye-checkbox:has(input[type="checkbox"]) > svg[name="openEye"] {
   display: none;
 }
 
-.eye-checkbox:has(input[type="checkbox"]:checked) > #openEye {
+.eye-checkbox:has(input[type="checkbox"]:checked) > svg[name="openEye"] {
   display: block;
 }
 
-.eye-checkbox:has(input[type="checkbox"]:checked) > #closedEye {
+.eye-checkbox:has(input[type="checkbox"]:checked) > svg[name="closedEye"] {
   display: none;
 }
