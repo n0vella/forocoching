@@ -1,6 +1,7 @@
 import manifest from "../../manifest.json"
 import { loadSettings } from "../utils"
 import router from "./router"
+import "./index.css"
 
 const myConsole = window.console
 

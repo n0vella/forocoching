@@ -33,6 +33,18 @@ function loadThreads(): Thread[] {
         const separator = threadRow.nextElementSibling as HTMLElement
         separator.style.display = "none"
       },
+      blur: () => {
+        const threadRow = thread.parentElement
+        threadRow.style.position = "relative"
+
+        const blurDiv = document.createElement("div")
+        blurDiv.classList.add("fc-blurred-thread")
+        blurDiv.addEventListener("click", () => {
+          blurDiv.style.display = "none"
+        })
+
+        threadRow.appendChild(blurDiv)
+      },
       changeColor: (color: string) => {
         titleSpan.style.color = color
       },
@@ -93,7 +105,8 @@ export async function tagThreads() {
 
       if (tag) {
         if (tag.hide) {
-          thread.hide()
+          thread.changeColor(tag.color)
+          thread.blur()
           log(
             `Hidden thread ${thread.title} because it has been classified as "${tag.tagName}"`,
           )

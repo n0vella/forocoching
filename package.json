@@ -1,15 +1,15 @@
 {
   "name": "forocoching",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "",
   "type": "module",
   "scripts": {
-    "dev": "cross-env WATCH=true concurrently \"vite build --config vite.config.es.js --watch\" \"vite build --config vite.config.iife.js --watch\"",
-    "build": "vite build --config vite.config.es.js && vite build --config vite.config.iife.js && node build.js"
+    "dev": "cross-env WATCH=true concurrently \"vite build --config vite.config.bg.js --watch\" \"vite build --config vite.config.cs.js --watch\"",
+    "build": "vite build --config vite.config.bg.js && vite build --config vite.config.cs.js && node build.js"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@tailwindcss/vite": "^4.1.11",
     "@types/chrome": "^0.1.4",

@@ -42,5 +42,9 @@ interface Thread {
   author: string
   content: string
   hide: () => void
+  blur: () => void
   changeColor: (color: string) => void
 }
+
+declare module "*.css"
+declare module "*.css?inline"
