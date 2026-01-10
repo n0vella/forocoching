@@ -5,7 +5,32 @@ function call(messages: ChatMessage[]): Promise<string> {
   })
 }
 
+async function tagsInCache(threadIds: number[]) {
+  const threadsStateCache: number = (
+    await chrome.storage.local.get({ threadsState: null })
+  ).threadsState
+
+  const threadState = threadIds.reduce((v, t, i) => t * i)
+
+  if (threadState === threadsStateCache) {
+    return true
+  } else {
+    chrome.storage.local.set({ threadsState: threadState })
+    return false
+  }
+}
+
 export async function tagger(threads: Thread[]) {
+  if (tagsInCache(threads.map((t) => t.id))) {
+    const cachedTags: string[] = (
+      await chrome.storage.local.get({ cachedTags: null })
+    ).cachedTags
+
+    if (cachedTags) {
+      return cachedTags
+    }
+  }
+
   const tags = settings.ai.tags
     .map(({ tagName: name, description }) => `"${name}": ${description}`)
     .join("\n")
@@ -41,7 +66,11 @@ export async function tagger(threads: Thread[]) {
       return []
     }
 
-    return JSON.parse(match[0]).map(({ tag }) => tag)
+    const tags: string[] = JSON.parse(match[0]).map(({ tag }) => tag)
+
+    chrome.storage.local.set({ cachedTags: tags })
+
+    return tags
   } catch (e) {
     console.error("Error parsing model response: ", e)
     log("response body", response)

@@ -24,6 +24,7 @@ function loadThreads(): Thread[] {
           .slice(1)
 
     threadsData.push({
+      id: Number(link.id.slice(13)), // id = thread_title_<id>
       title: titleSpan.innerText,
       author,
       content: link.title, // preview of content when hovering link

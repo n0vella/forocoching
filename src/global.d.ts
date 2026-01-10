@@ -38,6 +38,7 @@ declare const mobile: boolean
 type ChatMessage = import("openai/resources/index").ChatCompletionMessageParam
 
 interface Thread {
+  id: number
   title: string
   author: string
   content: string
