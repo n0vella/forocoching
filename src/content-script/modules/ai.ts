@@ -21,7 +21,7 @@ async function tagsInCache(threadIds: number[]) {
 }
 
 export async function tagger(threads: Thread[]) {
-  if (tagsInCache(threads.map((t) => t.id))) {
+  if (await tagsInCache(threads.map((t) => t.id))) {
     const cachedTags: string[] = (
       await chrome.storage.local.get({ cachedTags: null })
     ).cachedTags
