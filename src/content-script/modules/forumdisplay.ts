@@ -10,7 +10,7 @@ function loadThreads(): Thread[] {
 
   const threadsData: Thread[] = []
   for (const thread of Array.from(threads)) {
-    const link = thread.querySelector<HTMLSpanElement>("a")
+    const link = thread.querySelector<HTMLAnchorElement>("a")
 
     const titleSpan = link.querySelector<HTMLSpanElement>("span")
 
@@ -24,7 +24,7 @@ function loadThreads(): Thread[] {
           .slice(1)
 
     threadsData.push({
-      id: Number(link.id.slice(13)), // id = thread_title_<id>
+      id: Number(link.href.split("t=")[1]), // id = thread_title_<id>
       title: titleSpan.innerText,
       author,
       content: link.title, // preview of content when hovering link
