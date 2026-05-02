@@ -6,9 +6,9 @@ function call(messages: ChatMessage[]): Promise<string> {
 }
 
 async function tagsInCache(threadIds: number[]) {
-  const threadsStateCache: number = (
+  const threadsStateCache = (
     await chrome.storage.local.get({ threadsState: null })
-  ).threadsState
+  ).threadsState as number
 
   const threadState = threadIds.reduce((v, t, i) => t * i)
 
@@ -22,9 +22,9 @@ async function tagsInCache(threadIds: number[]) {
 
 export async function tagger(threads: Thread[]) {
   if (await tagsInCache(threads.map((t) => t.id))) {
-    const cachedTags: string[] = (
+    const cachedTags = (
       await chrome.storage.local.get({ cachedTags: null })
-    ).cachedTags
+    ).cachedTags as string[]
 
     if (cachedTags) {
       return cachedTags
@@ -66,7 +66,7 @@ export async function tagger(threads: Thread[]) {
       return []
     }
 
-    const tags: string[] = JSON.parse(match[0]).map(({ tag }) => tag)
+    const tags = JSON.parse(match[0]).map(({ tag }: {tag: string}) => tag)
 
     chrome.storage.local.set({ cachedTags: tags })
 

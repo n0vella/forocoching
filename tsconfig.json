@@ -1,9 +1,11 @@
 {
     "compilerOptions": {
-        "target": "es2018",
+        "target": "es2022",
         "esModuleInterop": true,
-        "moduleResolution": "node",
-        "resolveJsonModule": true
+        "moduleResolution": "bundler",
+        "module": "es2022",
+        "resolveJsonModule": true,
+        "types": ["chrome"]
     },
     "include": [
         "src"
