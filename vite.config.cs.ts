@@ -9,6 +9,7 @@ export default defineConfig({
   build: {
     outDir: resolve(__dirname, "dist/content-script"),
     minify: !process.env.WATCH, // minify only on build
+    sourcemap: false,
     rollupOptions: {
       input: resolve(__dirname, "src/content-script/index.ts"),
       output: {

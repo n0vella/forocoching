@@ -9,6 +9,7 @@ export default defineConfig({
   build: {
     outDir: resolve(__dirname, "dist"),
     minify: !process.env.WATCH, // minify only on build
+    sourcemap: false,
     rollupOptions: {
       input: {
         "settings/settings": resolve(__dirname, "src/settings/settings.html"),
