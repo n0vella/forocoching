@@ -28,6 +28,6 @@
   },
   "dependencies": {
     "lodash": "^4.17.23",
-    "openai": "^5.23.2"
+    "browser-extension-ai": "file:../browser-extension-ai"
   }
 }

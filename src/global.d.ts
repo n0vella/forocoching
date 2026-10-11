@@ -1,5 +1,5 @@
 interface Message {
-  action: "log" | "loadModelResponse"
+  action: "log" | "loadModelResponse" | "listModels"
   content: any
 }
 
@@ -35,7 +35,7 @@ interface Window {
 declare const settings: Settings
 declare const mobile: boolean
 
-type ChatMessage = import("openai/resources/index").ChatCompletionMessageParam
+type ChatMessage = import("browser-extension-ai").ChatMessage
 
 interface Thread {
   id: number

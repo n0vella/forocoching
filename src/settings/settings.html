@@ -86,8 +86,23 @@
               name="apiKey"
               class="user-input w-full"
             />
-            <label for="model">Modelo:</label>
-            <input id="model" name="model" class="user-input w-full" />
+            <div class="flex items-center justify-between gap-2">
+              <label for="model">Modelo:</label>
+              <span
+                id="loadModels"
+                class="cursor-pointer text-sm text-emerald-700"
+                >[Cargar modelos]</span
+              >
+            </div>
+            <div class="w-full">
+              <input
+                id="model"
+                name="model"
+                class="user-input w-full"
+                list="model-list"
+              />
+              <datalist id="model-list"></datalist>
+            </div>
           </div>
           <h3>Clasificador de hilos</h3>
           <div class="settings-section">

@@ -152,6 +152,48 @@ async function setIgnoredUsers() {
   form.ignoredUsers.value = ignoredUsers.join("\n")
 }
 
+async function loadModels() {
+  const endpoint = form.endpoint.value.trim()
+  const apiKey = form.apiKey.value.trim()
+  if (!endpoint) {
+    alert("Por favor, introduce un endpoint primero.")
+    return
+  }
+  const loadModelsSpan = document.querySelector<HTMLSpanElement>("#loadModels")
+  const originalText = loadModelsSpan.textContent
+  loadModelsSpan.textContent = "[Cargando...]"
+  try {
+    const response = await chrome.runtime.sendMessage({
+      action: "listModels",
+      content: { endpoint, apiKey },
+    })
+    if (response && response.error) {
+      throw new Error(response.error)
+    }
+    const models = response || []
+    const datalist = document.querySelector<HTMLDataListElement>("#model-list")
+    datalist.innerHTML = ""
+    for (const model of models) {
+      const modelId = typeof model === "string" ? model : model.id
+      if (modelId) {
+        const option = document.createElement("option")
+        option.value = modelId
+        datalist.appendChild(option)
+      }
+    }
+    loadModelsSpan.textContent = "[Modelos cargados]"
+    setTimeout(() => {
+      loadModelsSpan.textContent = originalText
+    }, 2000)
+  } catch (e) {
+    console.error("Error loading models:", e)
+    loadModelsSpan.textContent = "[Error]"
+    setTimeout(() => {
+      loadModelsSpan.textContent = originalText
+    }, 2000)
+  }
+}
+
 function setTagMenuVisibility() {
   const tagMenu = document.querySelector<HTMLDivElement>("#tag-menu")
   tagMenu.hidden = !form.enableTagThreads.checked
@@ -165,12 +207,20 @@ const addTagButton = document.querySelector<HTMLButtonElement>("#addTag")
 const restoreDefaultPrompt = document.querySelector<HTMLSpanElement>(
   "#restoreDefaultPrompt",
 )
+const loadModelsSpan = document.querySelector<HTMLSpanElement>("#loadModels")
 
 form.addEventListener("submit", onSubmit)
 loadIgnoredusers.addEventListener("click", setIgnoredUsers)
 addTagButton.addEventListener("click", addTag)
 restoreDefaultPrompt.addEventListener("click", setDefaultPrompt)
 form.enableTagThreads.addEventListener("change", setTagMenuVisibility)
+loadModelsSpan.addEventListener("click", loadModels)
+form.model.addEventListener("focus", () => {
+  const datalist = document.querySelector<HTMLDataListElement>("#model-list")
+  if (datalist.children.length === 0 && form.endpoint.value.trim()) {
+    loadModels()
+  }
+})
 
 // set values from settings
 loadSettings().then(() => {

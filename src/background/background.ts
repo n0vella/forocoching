@@ -1,21 +1,16 @@
-import OpenAI from "openai"
+import { generateAIResponse, describeError, listModels } from "browser-extension-ai"
 import { loadSettings } from "../utils"
 
 async function callAIModel(messages: ChatMessage[]) {
   const settings = await loadSettings()
-
-  const client = new OpenAI({
-    baseURL: settings.ai.endpoint,
+  const hasSystem = messages[0]?.role === "system"
+  return await generateAIResponse({
+    endpoint: settings.ai.endpoint,
     apiKey: settings.ai.apiKey,
-    dangerouslyAllowBrowser: true,
-  })
-
-  const response = await client.chat.completions.create({
     model: settings.ai.model,
-    messages,
+    instructions: hasSystem ? messages[0].content : undefined,
+    messages: messages,
   })
-
-  return response.choices[0].message.content
 }
 
 chrome.runtime.onMessage.addListener(function messageListener(
@@ -26,15 +21,21 @@ chrome.runtime.onMessage.addListener(function messageListener(
   switch (message.action) {
     case "log":
       console.log(...message.content)
+      break
     case "loadModelResponse":
       Promise.resolve(callAIModel(message.content))
         .then(sendResponse)
-        .catch((e) => sendResponse("Error: " + e))
+        .catch((e) => sendResponse("Error: " + describeError(e)))
+      return true
+    case "listModels":
+      Promise.resolve(listModels(message.content.endpoint, message.content.apiKey))
+        .then(sendResponse)
+        .catch((e) => sendResponse({ error: "Error: " + describeError(e) }))
       return true
   }
 })
 
-// open settigns in a new tab when click on extension icon
+// open settings in a new tab when click on extension icon
 const openSettings = () =>
   chrome.tabs.create({
     url: chrome.runtime.getURL("dist/settings/settings.html"),
