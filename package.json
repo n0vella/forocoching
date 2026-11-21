@@ -1,11 +1,15 @@
 {
   "name": "forocoching",
   "version": "0.2.0",
-  "description": "",
+  "description": "Extensión para ForoCoches con filtrado de hilos, usuarios ignorados, editor social y clasificador con IA multi-proveedor.",
   "type": "module",
   "scripts": {
-    "dev": "cross-env WATCH=true concurrently \"vite build --config vite.config.bg.js --watch\" \"vite build --config vite.config.cs.js --watch\"",
-    "build": "vite build --config vite.config.bg.js && vite build --config vite.config.cs.js && node build.js",
+    "dev": "cross-env WATCH=true concurrently \"vite build --config vite.config.bg.ts --watch\" \"vite build --config vite.config.cs.ts --watch\"",
+    "build:bg": "vite build --config vite.config.bg.ts",
+    "build:cs": "vite build --config vite.config.cs.ts",
+    "build": "vite build --config vite.config.bg.ts && vite build --config vite.config.cs.ts && node scripts/package.mjs",
+    "build:chrome": "vite build --config vite.config.bg.ts && vite build --config vite.config.cs.ts && node scripts/package.mjs chrome",
+    "build:firefox": "vite build --config vite.config.bg.ts && vite build --config vite.config.cs.ts && node scripts/package.mjs firefox",
     "check": "tsc --noEmit"
   },
   "keywords": [],
@@ -27,7 +31,16 @@
     "vite": "^7.3.1"
   },
   "dependencies": {
+    "@ai-sdk/anthropic": "^4.0.107",
+    "@ai-sdk/deepseek": "^3.0.89",
+    "@ai-sdk/google": "^4.0.123",
+    "@ai-sdk/groq": "^4.0.86",
+    "@ai-sdk/mistral": "^4.0.89",
+    "@ai-sdk/openai": "^4.0.122",
+    "@ai-sdk/openai-compatible": "^3.0.94",
+    "@ai-sdk/xai": "^5.0.48",
+    "ai": "^7.0.178",
     "lodash": "^4.17.23",
-    "browser-extension-ai": "file:../browser-extension-ai"
+    "zod": "^4.6.7"
   }
 }
