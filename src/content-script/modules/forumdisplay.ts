@@ -1,41 +1,50 @@
+import type { Thread } from "../../shared/types"
+import { getSettings, isMobile, log } from "../context"
 import { tagger } from "./ai"
 
-/**
- * returns thread object
- */
 function loadThreads(): Thread[] {
   const threads = document.querySelectorAll<HTMLDivElement>(
     'div:has( > div > span > a[href^="showthread.php?t="])',
   )
 
+  const mobile = isMobile()
   const threadsData: Thread[] = []
+
   for (const thread of Array.from(threads)) {
     const link = thread.querySelector<HTMLAnchorElement>("a")
+    const titleSpan = link?.querySelector<HTMLSpanElement>("span")
+    if (!link || !titleSpan) continue
 
-    const titleSpan = link.querySelector<HTMLSpanElement>("span")
-
-    const author = mobile
+    const authorEl = mobile
       ? thread.querySelector<HTMLSpanElement>(
           'a[href^="showthread.php?p="] > div > span:nth-child(4)',
-        ).innerText
-      : thread
-          .querySelector<HTMLSpanElement>("div > div > a > span")
-          .innerText.split(" - ")[0]
-          .slice(1)
+        )
+      : thread.querySelector<HTMLSpanElement>("div > div > a > span")
+
+    const author = authorEl
+      ? mobile
+        ? authorEl.innerText.trim()
+        : authorEl.innerText.split(" - ")[0].slice(1).trim()
+      : ""
+
+    const idMatch = link.href.match(/[?&]t=(\d+)/)
+    const id = idMatch ? Number(idMatch[1]) : 0
 
     threadsData.push({
-      id: Number(link.href.split("t=")[1]), // id = thread_title_<id>
+      id,
       title: titleSpan.innerText,
       author,
-      content: link.title, // preview of content when hovering link
+      content: link.title,
       hide: () => {
         const threadRow = thread.parentElement
+        if (!threadRow) return
         threadRow.style.display = "none"
-        const separator = threadRow.nextElementSibling as HTMLElement
-        separator.style.display = "none"
+        const separator = threadRow.nextElementSibling as HTMLElement | null
+        if (separator) separator.style.display = "none"
       },
       blur: () => {
         const threadRow = thread.parentElement
+        if (!threadRow) return
         threadRow.style.position = "relative"
 
         const blurDiv = document.createElement("div")
@@ -55,23 +64,21 @@ function loadThreads(): Thread[] {
   return threadsData
 }
 
-/**
- * filter threads with any string present on list
- */
-export function filterStrings() {
+export function filterStrings(): void {
+  const settings = getSettings()
   const threads = loadThreads()
 
   function checkTitle(thread: Thread) {
+    const title = thread.title.toLowerCase()
     for (const str of settings.filteredStrings) {
-      const title = thread.title.toLowerCase()
-
       if (
-        title.includes(" " + str + " ") ||
-        title.endsWith(" " + str) ||
-        title.startsWith(str + " ")
+        title === str ||
+        title.includes(` ${str} `) ||
+        title.endsWith(` ${str}`) ||
+        title.startsWith(`${str} `)
       ) {
         thread.hide()
-        log(`Hidden thread ${thread.title} because it contains "${str}"`)
+        log(`Hidden thread "${thread.title}" because it contains "${str}"`)
         return
       }
     }
@@ -82,7 +89,7 @@ export function filterStrings() {
       if (thread.author === ignoredUser) {
         thread.hide()
         log(
-          `Hidden thread ${thread.title} because is authorized by "${ignoredUser}"`,
+          `Hidden thread "${thread.title}" because it is authored by "${ignoredUser}"`,
         )
         return
       }
@@ -95,25 +102,29 @@ export function filterStrings() {
   }
 }
 
-export async function tagThreads() {
+export async function tagThreads(): Promise<void> {
+  const settings = getSettings()
   const threads = loadThreads()
+  if (threads.length === 0) return
+
   const threadTags = await tagger(threads)
 
   for (let i = 0; i < threads.length; i++) {
-    if (threadTags[i] && threadTags[i] !== "otros") {
-      const tag = settings.ai.tags.filter((t) => t.tagName == threadTags[i])[0]
-      const thread = threads[i]
+    const assignedTag = threadTags[i]
+    if (!assignedTag || assignedTag.toLowerCase() === "otros") continue
 
-      if (tag) {
-        if (tag.hide) {
-          thread.changeColor(tag.color)
-          thread.blur()
-          log(
-            `Hidden thread ${thread.title} because it has been classified as "${tag.tagName}"`,
-          )
-        } else {
-          thread.changeColor(tag.color)
-        }
+    const tag = settings.ai.tags.find(
+      (t) => t.tagName.toLowerCase() === assignedTag.toLowerCase(),
+    )
+    const thread = threads[i]
+
+    if (tag) {
+      thread.changeColor(tag.color)
+      if (tag.hide) {
+        thread.blur()
+        log(
+          `Blurred thread "${thread.title}" classified as "${tag.tagName}"`,
+        )
       }
     }
   }

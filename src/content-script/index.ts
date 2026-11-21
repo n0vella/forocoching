@@ -1,24 +1,20 @@
-import manifest from "../../manifest.json"
-import { loadSettings } from "../utils"
-import router from "./router"
+import { loadSettings } from "../shared/storage"
+import { initContext } from "./context"
 import "./index.css"
+import router from "./router"
 
-const myConsole = window.console
-
-function log(...data: any[]) {
-  console.log(`%c${manifest.name}:`, "color: green; font-weight: bold", ...data)
-}
+// Capture native console before site scripts can override it
+const originalConsole = window.console
 
 async function main() {
-  window.console = myConsole // return hijacked console
-  window.log = log // convenience
-  window.mobile =
-    /Android|webOS|iPhone|iPad|iPod|BlackBerry|Windows Phone/i.test(
-      navigator.userAgent,
-    )
-
-  await loadSettings()
+  window.console = originalConsole
+  const settings = await loadSettings()
+  initContext(settings)
   router()
 }
 
-window.addEventListener("DOMContentLoaded", main)
+if (document.readyState === "loading") {
+  window.addEventListener("DOMContentLoaded", main, { once: true })
+} else {
+  main()
+}

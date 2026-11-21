@@ -1,3 +1,5 @@
+import { getSettings, isMobile } from "../context"
+
 function pasteLink(e: ClipboardEvent, callback: (text: string) => void) {
   const text = e.clipboardData?.getData("text")
   if (!text) return
@@ -6,43 +8,21 @@ function pasteLink(e: ClipboardEvent, callback: (text: string) => void) {
     youtube:
       /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/,
     ig: /(?:instagram\.com\/(?:p|reel)\/)([\w-]+)/,
-    tweet: /(?:x\.com\/\w+\/status\/)(\d+)/,
+    tweet: /(?:(?:x|twitter)\.com\/\w+\/status\/)(\d+)/,
     tiktok: /(?:tiktok\.com\/@[\w.]+\/video\/)(\d+)/,
   }
 
   for (const [platform, regex] of Object.entries(patterns)) {
     const match = text.match(regex)
-
-    // embed social media link
     if (match && match[1]) {
       e.preventDefault()
       e.stopPropagation()
 
-      callback(
-        `[${platform.toUpperCase()}]${match[1]}[/${platform.toUpperCase()}]`,
-      )
+      const tag = platform.toUpperCase()
+      callback(`[${tag}]${match[1]}[/${tag}]`)
       return
     }
   }
-}
-
-function insertTextOnIframeEditor(
-  e: ClipboardEvent,
-  iframe: HTMLIFrameElement,
-  text: string,
-) {
-  const textField = e.target as HTMLElement
-  if (!textField) return
-
-  const target =
-    (textField.querySelector("div:last-child") as HTMLElement) ?? textField
-
-  removeTrailingLineBreaks(target)
-
-  target.innerHTML += text + "<br>"
-  moveCursorToEnd(iframe, target)
-
-  e.preventDefault()
 }
 
 function removeTrailingLineBreaks(element: HTMLElement) {
@@ -57,51 +37,71 @@ function removeTrailingLineBreaks(element: HTMLElement) {
 export function moveCursorToEnd(
   iframe: HTMLIFrameElement,
   element?: HTMLElement,
-) {
+): void {
   const doc = iframe.contentDocument || iframe.contentWindow?.document
-  const wind = iframe.contentWindow
-  if (!doc || !wind) return
+  const win = iframe.contentWindow
+  if (!doc || !win) return
 
-  if (!element) {
-    element = doc.body
-  }
-
+  const target = element ?? doc.body
   const range = doc.createRange()
 
-  range.selectNodeContents(element)
+  range.selectNodeContents(target)
   range.collapse(false)
 
-  const selection = wind.getSelection()
+  const selection = win.getSelection()
   if (!selection) return
 
   selection.removeAllRanges()
   selection.addRange(range)
 }
 
-export function trackPastedLinks() {
+function insertTextOnIframeEditor(
+  e: ClipboardEvent,
+  iframe: HTMLIFrameElement,
+  text: string,
+) {
+  const textField = e.target as HTMLElement | null
+  if (!textField) return
+
+  const target =
+    (textField.querySelector("div:last-child") as HTMLElement | null) ??
+    textField
+
+  removeTrailingLineBreaks(target)
+
+  target.innerHTML += text + "<br>"
+  moveCursorToEnd(iframe, target)
+
+  e.preventDefault()
+}
+
+export function trackPastedLinks(): void {
+  const settings = getSettings()
   if (!settings.socialMediaLinks) return
 
-  if (mobile && location.pathname === "/foro/showthread.php") {
+  if (isMobile() && location.pathname === "/foro/showthread.php") {
     const textArea = document.querySelector<HTMLTextAreaElement>(
       "#vB_Editor_QR_textarea",
     )
+    if (!textArea) return
+
     textArea.addEventListener("paste", (e: ClipboardEvent) => {
       pasteLink(e, (text) => {
         textArea.value += text
       })
     })
   } else {
-    const iframe = document.querySelector(
+    const iframe = document.querySelector<HTMLIFrameElement>(
       "#vB_Editor_001_iframe, #vB_Editor_QR_iframe",
-    ) as HTMLIFrameElement
+    )
     const iframeDoc = iframe?.contentDocument || iframe?.contentWindow?.document
-    if (!iframeDoc) return
+    if (!iframe || !iframeDoc) return
 
     const handlePaste = (e: ClipboardEvent) => {
       pasteLink(e, (text) => insertTextOnIframeEditor(e, iframe, text))
     }
 
-    const textArea = iframeDoc.querySelector("body")
-    textArea?.addEventListener("paste", handlePaste)
+    const body = iframeDoc.querySelector("body")
+    body?.addEventListener("paste", handlePaste)
   }
 }
