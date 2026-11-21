@@ -1,154 +1,429 @@
 <!doctype html>
-<html lang="en">
+<html lang="es">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/x-icon" href="/icon.png" />
+    <link rel="icon" type="image/png" href="../icon.png" />
     <link rel="stylesheet" href="./settings.css" />
     <script type="module" src="./settings.ts"></script>
-    <title>Forocoching</title>
+    <title>Forocoching — Opciones</title>
   </head>
-  <body>
-    <form>
-      <div
-        class="fixed top-0 flex h-10 w-full items-center bg-zinc-100 p-2 shadow shadow-zinc-200"
+  <body class="bg-zinc-100 text-zinc-800 antialiased">
+    <form id="settingsForm">
+      <header
+        class="sticky top-0 z-20 border-b border-zinc-200 bg-white/90 backdrop-blur"
       >
-        <button
-          name="submitButton"
-          class="flex h-8 items-center rounded-lg border-2 border-emerald-600 bg-emerald-500 px-2 py-1 text-white enabled:hover:text-black disabled:opacity-80"
+        <div
+          class="mx-auto flex max-w-4xl items-center justify-between gap-4 px-4 py-3 sm:px-6"
         >
-          <span>GUARDAR</span>
-        </button>
-      </div>
-      <div
-        class="flex min-h-screen w-full flex-col gap-5 overflow-y-auto bg-zinc-50 p-10 pt-16 max-sm:px-4"
-      >
-        <h2>Filtrado por título</h2>
-        <div class="settings-section">
-          <span class="text-sm"
-            >En cada linea escribir las palabras o frases que se quieran
-            ocultar</span
-          >
-          <textarea
-            name="filteredStrings"
-            class="user-input h-40 w-full max-w-md text-sm"
-          ></textarea>
-        </div>
+          <div class="flex items-center gap-3">
+            <img
+              src="../icon.png"
+              alt="Forocoching"
+              class="h-8 w-8 rounded-lg shadow-sm"
+            />
+            <div>
+              <h1 class="text-base font-bold leading-tight text-zinc-900">
+                Forocoching
+              </h1>
+              <p class="text-xs text-zinc-500">Configuración de la extensión</p>
+            </div>
+          </div>
 
-        <h2>Usuarios ignorados</h2>
-        <div class="settings-section">
-          <div>
-            <span class="text-sm">Uno por línea: </span>
+          <div class="flex items-center gap-3">
             <span
-              id="loadIgnoredusers"
-              class="cursor-pointer text-sm text-emerald-700"
-              >[Cargar de tu lista del foro]</span
+              id="saveStatus"
+              class="hidden text-xs font-medium sm:inline"
+            ></span>
+            <button
+              name="submitButton"
+              type="submit"
+              class="btn-primary"
+              disabled
             >
+              Guardar cambios
+            </button>
           </div>
-          <textarea
-            name="ignoredUsers"
-            class="user-input h-40 w-full max-w-md text-sm"
-          ></textarea>
-          <label>
-            <input
-              name="trackIgnoredUsers"
-              type="checkbox"
-              class="accent-emerald-500"
-            />
-            <span>Sincronizar con lista de ignorados del foro</span>
-          </label>
         </div>
+      </header>
 
-        <h2>Editor</h2>
-        <div class="settings-section">
-          <label>
-            <input
-              name="socialMediaLinks"
-              type="checkbox"
-              class="accent-emerald-500"
-            />
-            <span>Ayuda para pegar enlaces de YouTube, IG, Twitter...</span>
-          </label>
-        </div>
-
-        <h2>IA</h2>
-        <div class="settings-section">
-          <h3>Datos del modelo</h3>
-          <div
-            class="flex max-w-[500px] flex-col items-center gap-x-3 gap-y-2 sm:ml-2 sm:grid sm:grid-cols-[max-content_1fr]"
-          >
-            <label for="endpoint">Endpoint:</label>
-            <input id="endpoint" name="endpoint" class="user-input w-full" />
-            <label for="apiKey">Api key:</label>
-            <input
-              id="apiKey"
-              type="password"
-              name="apiKey"
-              class="user-input w-full"
-            />
-            <div class="flex items-center justify-between gap-2">
-              <label for="model">Modelo:</label>
-              <span
-                id="loadModels"
-                class="cursor-pointer text-sm text-emerald-700"
-                >[Cargar modelos]</span
-              >
-            </div>
-            <div class="w-full">
-              <input
-                id="model"
-                name="model"
-                class="user-input w-full"
-                list="model-list"
-              />
-              <datalist id="model-list"></datalist>
+      <main class="mx-auto flex max-w-4xl flex-col gap-6 px-4 py-6 sm:px-6">
+        <!-- IA -->
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Inteligencia Artificial</h2>
+              <p class="card-subtitle">
+                Configura el proveedor y el modelo que se usarán en segundo plano
+                para clasificar hilos.
+              </p>
             </div>
           </div>
-          <h3>Clasificador de hilos</h3>
-          <div class="settings-section">
-            <label>
-              <input
-                name="enableTagThreads"
-                type="checkbox"
-                class="accent-emerald-500"
-              />
-              <span>Habilitar clasificador de hilos</span>
-            </label>
 
-            <div id="tag-menu" class="flex flex-col gap-4">
-              <div class="flex flex-col gap-2">
-                <h4>Prompt:</h4>
-                <span class="text-sm"
-                  >Se reemplazará "{tags}" por los tags de más abajo
-                  <span
-                    id="restoreDefaultPrompt"
-                    class="cursor-pointer text-sm text-emerald-700"
-                    >[Restaurar prompt por defecto]</span
-                  ></span
+          <div class="flex flex-col gap-5">
+            <!-- Proveedor -->
+            <div class="field-group">
+              <div class="flex items-center justify-between gap-2">
+                <label for="provider" class="field-label">Proveedor</label>
+                <a
+                  id="apiKeyHelpLink"
+                  href="#"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="hidden text-xs font-medium text-emerald-700 hover:underline"
                 >
-                <textarea
-                  name="prompt"
-                  class="user-input h-40 w-full max-w-xl text-sm"
-                ></textarea>
+                  Obtener API Key ↗
+                </a>
+              </div>
+              <select id="provider" name="provider" class="user-input w-full">
+                <!-- Poblado dinámicamente desde providers.ts -->
+              </select>
+              <p id="providerDescription" class="field-hint"></p>
+            </div>
+
+            <!-- Endpoint (visible directamente para Ollama / LM Studio / Custom) -->
+            <div id="primaryEndpointContainer" class="field-group hidden">
+              <label for="endpointPrimary" class="field-label">
+                Endpoint (Base URL)
+              </label>
+              <input
+                id="endpointPrimary"
+                type="url"
+                class="user-input w-full font-mono text-sm"
+                placeholder="https://api.ejemplo.com/v1"
+              />
+              <p id="endpointPrimaryHint" class="field-hint"></p>
+            </div>
+
+            <!-- API Key -->
+            <div class="field-group">
+              <div class="flex items-center justify-between gap-2">
+                <label for="apiKey" class="field-label">API Key</label>
+                <span id="apiKeyOptionalBadge" class="hidden text-xs text-zinc-500">
+                  Opcional
+                </span>
+              </div>
+              <div class="relative flex items-center">
+                <input
+                  id="apiKey"
+                  name="apiKey"
+                  type="password"
+                  autocomplete="off"
+                  spellcheck="false"
+                  class="user-input w-full pr-10 font-mono text-sm"
+                />
+                <button
+                  id="toggleApiKey"
+                  type="button"
+                  title="Mostrar / ocultar API Key"
+                  class="absolute right-2 rounded p-1 text-zinc-500 hover:bg-zinc-100 hover:text-zinc-800"
+                >
+                  <svg
+                    id="eyeShowIcon"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M10 12a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
+                    <path
+                      d="M21 12c-2.4 4 -5.4 6 -9 6c-3.6 0 -6.6 -2 -9 -6c2.4 -4 5.4 -6 9 -6c3.6 0 6.6 2 9 6"
+                    />
+                  </svg>
+                  <svg
+                    id="eyeHideIcon"
+                    class="hidden"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M10.585 10.587a2 2 0 0 0 2.829 2.828" />
+                    <path
+                      d="M16.681 16.673a8.717 8.717 0 0 1 -4.681 1.327c-3.6 0 -6.6 -2 -9 -6c1.272 -2.12 2.712 -3.678 4.32 -4.674m2.86 -1.146a9.055 9.055 0 0 1 1.82 -.18c3.6 0 6.6 2 9 6c-.666 1.11 -1.379 2.067 -2.138 2.87"
+                    />
+                    <path d="M3 3l18 18" />
+                  </svg>
+                </button>
+              </div>
+              <p class="field-hint">
+                Se guarda en tu almacenamiento sincronizado del navegador y solo
+                se envía al proveedor elegido.
+              </p>
+            </div>
+
+            <!-- Modelo -->
+            <div class="field-group">
+              <div class="flex flex-wrap items-center justify-between gap-2">
+                <label for="model" class="field-label">Modelo</label>
+                <button
+                  id="loadModelsButton"
+                  type="button"
+                  class="btn-secondary text-xs"
+                >
+                  Cargar modelos disponibles
+                </button>
               </div>
 
-              <h4>Tags:</h4>
-              <div class="flex w-fit max-w-full flex-col gap-3">
-                <div id="tags" class="flex flex-col gap-4 sm:gap-2"></div>
-                <div class="flex justify-end">
-                  <button
-                    id="addTag"
-                    type="button"
-                    class="settings-button h-10"
-                  >
-                    <span class="mb-1 text-3xl">+</span>
-                  </button>
+              <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
+                <select id="modelSelect" class="user-input w-full text-sm">
+                  <!-- Poblado dinámicamente -->
+                </select>
+                <input
+                  id="model"
+                  name="model"
+                  type="text"
+                  spellcheck="false"
+                  placeholder="ID exacto del modelo (ej. gpt-4o-mini)"
+                  class="user-input w-full font-mono text-sm"
+                />
+              </div>
+              <p id="modelsStatus" class="field-hint">
+                Puedes elegir un modelo de la lista o escribir cualquier ID
+                manualmente.
+              </p>
+            </div>
+
+            <!-- Probar conexión -->
+            <div class="flex flex-wrap items-center gap-3 pt-1">
+              <button
+                id="testConnectionButton"
+                type="button"
+                class="btn-secondary"
+              >
+                Probar conexión
+              </button>
+              <div
+                id="testResult"
+                class="hidden flex-1 rounded-lg border px-3 py-2 text-xs leading-relaxed"
+              ></div>
+            </div>
+
+            <!-- Ajustes avanzados -->
+            <details
+              id="advancedAiDetails"
+              class="rounded-xl border border-zinc-200 bg-zinc-50/70 px-4 py-3"
+            >
+              <summary
+                class="cursor-pointer select-none text-sm font-medium text-zinc-700 hover:text-zinc-900"
+              >
+                Ajustes avanzados del modelo
+              </summary>
+
+              <div class="mt-4 flex flex-col gap-4">
+                <div id="advancedEndpointContainer" class="field-group">
+                  <label for="endpointAdvanced" class="field-label">
+                    Endpoint personalizado (opcional)
+                  </label>
+                  <input
+                    id="endpointAdvanced"
+                    type="url"
+                    class="user-input w-full font-mono text-sm"
+                  />
+                  <p class="field-hint">
+                    Déjalo vacío para usar el endpoint oficial por defecto del
+                    proveedor.
+                  </p>
+                </div>
+
+                <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div class="field-group">
+                    <div class="flex items-center justify-between">
+                      <label for="temperature" class="field-label">
+                        Temperatura
+                      </label>
+                      <span
+                        id="temperatureValue"
+                        class="font-mono text-xs text-zinc-600"
+                      >
+                        0.1
+                      </span>
+                    </div>
+                    <input
+                      id="temperature"
+                      name="temperature"
+                      type="range"
+                      min="0"
+                      max="1"
+                      step="0.05"
+                      class="w-full accent-emerald-600"
+                    />
+                    <p class="field-hint">
+                      Valores bajos (0.0 – 0.2) dan clasificaciones más
+                      consistentes.
+                    </p>
+                  </div>
+
+                  <div class="field-group">
+                    <label for="timeoutSec" class="field-label">
+                      Tiempo máximo de espera (segundos)
+                    </label>
+                    <input
+                      id="timeoutSec"
+                      name="timeoutSec"
+                      type="number"
+                      min="5"
+                      max="180"
+                      step="5"
+                      class="user-input w-full text-sm"
+                    />
+                    <p class="field-hint">
+                      Súbelo si usas modelos locales lentos o de razonamiento.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </details>
+
+            <hr class="border-zinc-200" />
+
+            <!-- Clasificador de hilos -->
+            <div class="flex flex-col gap-4">
+              <div class="flex items-center justify-between gap-4">
+                <div>
+                  <h3 class="text-base font-semibold text-zinc-900">
+                    Clasificador de hilos
+                  </h3>
+                  <p class="text-xs text-zinc-500">
+                    Colorea o difumina hilos automáticamente según tus tags.
+                  </p>
+                </div>
+                <label class="inline-flex cursor-pointer items-center gap-2">
+                  <input
+                    name="enableTagThreads"
+                    type="checkbox"
+                    class="h-4 w-4 rounded accent-emerald-600"
+                  />
+                  <span class="text-sm font-medium">Activado</span>
+                </label>
+              </div>
+
+              <div id="tag-menu" class="flex flex-col gap-5">
+                <div class="field-group">
+                  <div class="flex items-center justify-between gap-2">
+                    <label for="prompt" class="field-label">Prompt</label>
+                    <button
+                      id="restoreDefaultPrompt"
+                      type="button"
+                      class="text-xs font-medium text-emerald-700 hover:underline"
+                    >
+                      Restaurar prompt por defecto
+                    </button>
+                  </div>
+                  <p class="field-hint">
+                    Se reemplazará <code>{tags}</code> automáticamente por la
+                    lista de tags de abajo.
+                  </p>
+                  <textarea
+                    id="prompt"
+                    name="prompt"
+                    class="user-input h-36 w-full text-sm"
+                  ></textarea>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                  <div class="flex items-center justify-between">
+                    <span class="field-label">Tags</span>
+                    <button
+                      id="addTag"
+                      type="button"
+                      class="btn-secondary text-xs"
+                    >
+                      + Añadir tag
+                    </button>
+                  </div>
+                  <div id="tags" class="flex flex-col gap-2.5"></div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        </section>
+
+        <!-- Filtrado por título -->
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Filtrado por título</h2>
+              <p class="card-subtitle">
+                Escribe una palabra o frase por línea para ocultar hilos que la
+                contengan.
+              </p>
+            </div>
+          </div>
+          <textarea
+            name="filteredStrings"
+            placeholder="ejemplo&#10;otra palabra"
+            class="user-input h-36 w-full text-sm"
+          ></textarea>
+        </section>
+
+        <!-- Usuarios ignorados -->
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Usuarios ignorados</h2>
+              <p class="card-subtitle">
+                Un usuario por línea. Sus hilos se ocultarán del listado.
+              </p>
+            </div>
+            <button
+              id="loadIgnoredusers"
+              type="button"
+              class="btn-secondary text-xs"
+            >
+              Cargar de tu lista del foro
+            </button>
+          </div>
+          <div class="flex flex-col gap-3">
+            <p id="ignoredUsersStatus" class="field-hint hidden"></p>
+            <textarea
+              name="ignoredUsers"
+              class="user-input h-36 w-full text-sm"
+            ></textarea>
+            <label class="inline-flex cursor-pointer items-center gap-2 text-sm">
+              <input
+                name="trackIgnoredUsers"
+                type="checkbox"
+                class="h-4 w-4 rounded accent-emerald-600"
+              />
+              <span>Sincronizar automáticamente con tu lista de ignorados del foro</span>
+            </label>
+          </div>
+        </section>
+
+        <!-- Editor -->
+        <section class="card">
+          <div class="card-header">
+            <div>
+              <h2 class="card-title">Editor</h2>
+              <p class="card-subtitle">
+                Mejoras al escribir mensajes en el foro.
+              </p>
+            </div>
+          </div>
+          <label class="inline-flex cursor-pointer items-center gap-2 text-sm">
+            <input
+              name="socialMediaLinks"
+              type="checkbox"
+              class="h-4 w-4 rounded accent-emerald-600"
+            />
+            <span>
+              Convertir automáticamente enlaces pegados de YouTube, Instagram,
+              X/Twitter y TikTok a etiquetas BBCode
+            </span>
+          </label>
+        </section>
+      </main>
     </form>
   </body>
 </html>
