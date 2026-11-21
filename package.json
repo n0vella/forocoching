@@ -1,6 +1,6 @@
 {
   "name": "forocoching",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Extensión para ForoCoches con filtrado de hilos, usuarios ignorados, editor social y clasificador con IA multi-proveedor.",
   "type": "module",
   "scripts": {
