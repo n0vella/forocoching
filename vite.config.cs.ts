@@ -1,21 +1,23 @@
 import { resolve } from "path"
 import { defineConfig } from "vite"
 
-// build for content script (iife)
-
+// Content scripts are built as a single self-contained IIFE for Chrome & Firefox MV3 compatibility
 export default defineConfig({
   root: "src",
   base: "./",
+  publicDir: false,
   build: {
-    outDir: resolve(__dirname, "dist/content-script"),
-    minify: !process.env.WATCH, // minify only on build
+    outDir: resolve(__dirname, "dist/base/content-script"),
+    minify: !process.env.WATCH,
     sourcemap: false,
+    cssCodeSplit: false,
     rollupOptions: {
       input: resolve(__dirname, "src/content-script/index.ts"),
       output: {
-        format: "es",
-        entryFileNames: "[name].js",
-        assetFileNames: "assets/[name][extname]",
+        format: "iife",
+        inlineDynamicImports: true,
+        entryFileNames: "index.js",
+        assetFileNames: "index[extname]",
       },
     },
     emptyOutDir: true,
